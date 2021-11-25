@@ -1,17 +1,13 @@
 import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import CustomBar from "components/charts/Bar";
-import CustomPie from "components/charts/Pie";
 import ContentWrapper from "components/ContentWrapper";
 import Flex from "components/Flex";
-
-import { checkLogin } from "../../actions/auth";
+import { useAuth } from "context/authCtx";
 import Chart from "pages/tools/Chart";
 import News from "pages/tools/News";
 import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { useAuth } from "context/authCtx";
 
 const Dashboard = (props) => {
     const { currentUser } = useAuth();

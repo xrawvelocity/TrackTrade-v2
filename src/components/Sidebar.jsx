@@ -1,22 +1,18 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { useHistory, useLocation } from "react-router";
-import { logOut, checkLogin } from "../actions/auth";
-import { useAsyncEffect } from "../hooks/use-async-effect";
-import Flex from "./Flex";
-import Logo from "./Logo";
-import { Icon, Tooltip, Typography } from "@mui/material";
 import {
-    Home as HomeIcon,
-    Person as PersonIcon,
     Chat as ChatIcon,
-    Search as SearchIcon,
+    Home as HomeIcon,
     Info as InfoIcon,
     Logout as LogoutIcon,
+    Person as PersonIcon,
+    Search as SearchIcon,
 } from "@mui/icons-material";
-
+import { Icon, Tooltip, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { useHistory, useLocation } from "react-router";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/authCtx";
+import Flex from "./Flex";
+import Logo from "./Logo";
 
 const Sidebar = (props) => {
     const history = useHistory();

@@ -1,11 +1,7 @@
 import { useAuth } from "context/authCtx";
 import Header from "pages/partials/Header";
 import React, { useState } from "react";
-
-// redux imports
-import { connect } from "react-redux";
 import { useHistory } from "react-router";
-import { logIn, checkLogin } from "../../actions/auth";
 
 const Login = (props) => {
     const [email, setEmail] = useState("");

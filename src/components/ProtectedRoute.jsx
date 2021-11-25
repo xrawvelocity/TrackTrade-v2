@@ -1,11 +1,8 @@
-import { useAsyncEffect } from "hooks/use-async-effect";
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Route as BaseRoute, Redirect, useLocation } from "react-router-dom";
-import { checkLogin } from "actions/auth";
-import Loading from "./Loading";
-import Flex from "./Flex";
 import { useAuth } from "context/authCtx";
+import React, { useState } from "react";
+import { Redirect, Route as BaseRoute, useLocation } from "react-router-dom";
+
+import Loading from "./Loading";
 
 const ProtectedRoute = ({ path, children, exact, ...props }) => {
     const location = useLocation();

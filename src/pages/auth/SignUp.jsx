@@ -1,12 +1,7 @@
-import React, { Component, useState } from "react";
-import { TextField } from "@mui/material";
-
-// redux imports
-import { connect } from "react-redux";
-import { signUp, checkLogin } from "../../actions/auth";
-import InputField from "../../components/inputs/InputField";
 import Header from "pages/partials/Header";
+import React, { Component, useState } from "react";
 import { useHistory } from "react-router";
+
 import { useAuth } from "../../context/authCtx";
 
 const Signup = (props) => {
