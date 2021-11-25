@@ -1,5 +1,5 @@
 import { useAuth } from "context/authCtx";
-import Header from "pages/partials/Header";
+import Header from "components/partials/Header";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 

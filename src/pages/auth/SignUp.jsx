@@ -1,4 +1,4 @@
-import Header from "pages/partials/Header";
+import Header from "components/partials/Header";
 import React, { Component, useState } from "react";
 import { useHistory } from "react-router";
 
