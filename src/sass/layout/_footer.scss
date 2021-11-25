@@ -1,0 +1,97 @@
+.footer {
+    background-color: $color-blue-dark-1;
+    padding: 6rem 0rem 6rem 20rem;
+    font-size: 1.4rem;
+    color: #ccc;
+
+    @include respond(tab-port){
+        padding: 8rem 0;
+        display: none;
+    }
+    
+    &-image {
+        background-image: url("./images/favicon.png");
+        height: 48px;
+        width: 48px;
+
+        @include respond(tab-port){
+            display: none;
+        }
+
+        &-container {
+            width: 48px;
+            position: absolute;
+            right: 48%;
+            margin-top: .5rem;
+        }
+    }
+
+    &__logo-box {
+        text-align: center;
+        margin-bottom: 8rem;
+
+        @include respond(tab-port){
+            margin-bottom: 6rem;
+        }
+    }
+
+    &__logo {
+        width: 15rem;
+        height: auto;
+    }
+
+    &__navigation {
+        border-top: 1px solid $color-blue-dark-1;
+        padding-top: 2rem;
+        display: inline-block;
+
+        @include respond(tab-port){
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    &__list {
+        list-style: none;
+        
+    }
+
+    &__item {
+        display: inline-block;
+    
+        &:not(:last-child) {
+            margin-right: 1.5rem;
+        }
+    }
+
+    &__link {
+        &,
+        &:link,
+        &:visited {
+            color: #ccc;
+            text-decoration: none;
+            text-transform: uppercase;
+            display: inline-block;
+            transition: all .2s ease-in-out;
+        }
+        &:hover,
+        &:active {
+            color: #fff;
+            text-shadow: 0rem .5rem .4rem $color-black;
+            transform: translateY(-.1rem);
+        }
+    }
+
+    &__copyright {
+        border-top: 1px solid $color-blue-dark-1;
+        padding-top: 2rem;
+        width: 85%;
+        float: right;
+
+        @include respond(tab-port){
+            width: 100%;
+            float: none;
+            padding-left: 8rem;
+        }
+    }
+}
