@@ -22,6 +22,7 @@ import { SYMBOLS } from "enums/symbols";
 import SelectInput from "components/inputs/SelectInput";
 import MainButton from "components/MainButton";
 import { collection, doc, setDoc } from "@firebase/firestore";
+import { db } from "../../firebase/firebase";
 
 export default function PostIdeaModal({ open, onClose }) {
     const [initialValues] = useState({});
