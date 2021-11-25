@@ -4,8 +4,8 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 
-import CustomThemeProvider from "context/themeCtx";
-import AuthProvider from "context/authCtx";
+import CustomThemeProvider from "./context/themeCtx";
+import AuthProvider from "./context/authCtx";
 
 ReactDOM.render(
     <BrowserRouter>
