@@ -26,13 +26,17 @@ export default function SubSideBar({ obj, loc, header }) {
     const showItems = () => {
         return obj.map((each, i) => (
             <ListItem
-                className={
-                    selected.split("/")[2] === each.url
-                        ? "subsidebar-item_selected"
-                        : "subsidebar-item"
-                }
                 selected={selected.split("/")[2] === each.url}
-                style={{ fontSize: "15px" }}
+                sx={{
+                    fontSize: "15px",
+                    color:
+                        selected.split("/")[2] === each.url
+                            ? "#2ba7fa"
+                            : "#fff",
+                    "&:hover": {
+                        color: "#2ba7fa",
+                    },
+                }}
                 onClick={() => handleOnClick(each.url)}
                 button
                 key={i}
@@ -43,14 +47,31 @@ export default function SubSideBar({ obj, loc, header }) {
     };
     return (
         <Slide in={true} out={true} direction="right">
-            <Box className="subsidebar">
+            <Box
+                sx={{
+                    width: "150px",
+                    height: "100%",
+                    position: "fixed",
+                    backgroundColor: "#081c24",
+                    borderRadius: "0",
+                    color: "#fff",
+                    zIndex: "299",
+                    marginLeft: "80px",
+                }}
+            >
                 <List padding="0">
                     <Box
                         style={{
                             marginBottom: "2rem",
                         }}
                     >
-                        <Typography className="subsidebar-header" variant="h4">
+                        <Typography
+                            sx={{
+                                fontSize: "3.5rem",
+                                padding: "1.5rem 0 2rem 1.5rem",
+                            }}
+                            variant="h4"
+                        >
                             {header}
                         </Typography>
                         <Divider sx={{ borderColor: "#ffffff50" }} />

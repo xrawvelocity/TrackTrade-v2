@@ -12,6 +12,7 @@ import { useAuth } from "../../context/authCtx";
 import { Typography } from "@mui/material";
 
 import userDefault from "../../images/userdefault.png";
+import { Box } from "@mui/system";
 
 // redux imports
 const Profile = (props) => {
@@ -41,16 +42,15 @@ const Profile = (props) => {
     ];
 
     const loadAvatar = () => {
-        return userData.avatar ? (
+        return (
             <img
-                className="profile-nav__user-avatar__image"
-                src={userData.avatar}
-                alt="Avatar"
-            />
-        ) : (
-            <img
-                className="profile-nav__user-avatar__image"
-                src={userDefault}
+                style={{
+                    objectFit: "cover",
+                    height: "100%",
+                    width: "100%",
+                    zIndex: "-20",
+                }}
+                src={userData.avatar ? userData.avatar : userDefault}
                 alt="Avatar"
             />
         );
@@ -62,18 +62,43 @@ const Profile = (props) => {
                 <Typography sx={{ fontSize: "2rem", mr: "2rem" }}>
                     {userData?.username}
                 </Typography>
-                <div className="profile-nav__user-avatar">
+                <Box
+                    sx={{
+                        borderRadius: "50%",
+                        border: "none",
+                        height: "60px",
+                        width: "60px",
+                        backgroundColor: "#ccc",
+                        overflow: "hidden",
+
+                        "&:hover": {
+                            "& > div": {
+                                transform: "translateY(-7rem)",
+                                zIndex: "3",
+                                cursor: "pointer",
+                            },
+                        },
+                    }}
+                >
                     {loadAvatar()}
-                    <div className="profile-nav__user-avatar__change">
-                        <form className="profile-nav__user-avatar__change-form">
-                            <label
-                                className="profile-nav__user-avatar__change-form--label"
-                                htmlFor="img"
-                            >
+                    <Box
+                        sx={{
+                            backgroundColor: "rgba(34, 34, 34, 0.8)",
+                            color: "#fff",
+                            fontWeight: "700",
+                            textTransform: "uppercase",
+                            padding: "2rem auto",
+                            transform: "translateY(10rem)",
+                            transition: "all 0.2s ease-in-out",
+                            zIndex: "100",
+                        }}
+                    >
+                        <form style={{ padding: "2rem 1rem" }}>
+                            <label style={{ cursor: "pointer" }} htmlFor="img">
                                 Change Avatar
                             </label>
                             <input
-                                className="profile-nav__user-avatar__change-form--input"
+                                style={{ display: "none" }}
                                 // onChange={handleSubmit}
                                 type="file"
                                 id="img"
@@ -81,8 +106,8 @@ const Profile = (props) => {
                                 accept="image/*"
                             />
                         </form>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             </Flex>
         );
     };

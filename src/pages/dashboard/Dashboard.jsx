@@ -4,8 +4,8 @@ import CustomBar from "components/charts/Bar";
 import ContentWrapper from "components/ContentWrapper";
 import Flex from "components/Flex";
 import { useAuth } from "context/authCtx";
-import Chart from "pages/tools/Chart";
-import News from "pages/tools/News";
+import Chart from "components/tools/Chart";
+import News from "components/tools/News";
 import React from "react";
 import { Link } from "react-router-dom";
 

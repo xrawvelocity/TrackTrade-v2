@@ -25,14 +25,13 @@ const CustomBar = () => {
     const CustomBarShape = (props) => {
         const { amount } = props;
         let fill;
-        //business logic here to update fill color explicitly
+
         if (amount > 0) {
             fill = "#2c1";
         } else {
             fill = "#c21";
         }
 
-        //use explicit fill here, or use the additional css class and make a css selector to update fill there
         return <Rectangle {...props} fill={fill} />;
     };
 

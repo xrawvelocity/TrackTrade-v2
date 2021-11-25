@@ -42,8 +42,17 @@ const Sidebar = (props) => {
     if (currentUser?.email) {
         return (
             <nav
-                className="sidebar"
-                style={{ width: `${isDashboard ? "180px" : "80px"}` }}
+                style={{
+                    backgroundColor: "#06151b",
+                    borderRight: "2px solid #00000050",
+                    height: "100%",
+                    position: "fixed",
+                    left: "0",
+                    zIndex: "300",
+                    padding: "20px",
+                    transition: "all 0.1s ease-in",
+                    width: `${isDashboard ? "180px" : "80px"}`,
+                }}
             >
                 <Flex
                     sx={{
@@ -61,7 +70,17 @@ const Sidebar = (props) => {
                                 marginBottom: "2rem",
                             }}
                         >
-                            <div className="logo-text">
+                            <div
+                                style={{
+                                    cursor: "default",
+                                    color: "#fff",
+                                    textDecoration: "none",
+                                    fontSize: "2.4rem",
+                                    textAlign: "left",
+                                    textTransform: "uppercase",
+                                    lineHeight: "1.2",
+                                }}
+                            >
                                 Track
                                 <br />
                                 Trade
