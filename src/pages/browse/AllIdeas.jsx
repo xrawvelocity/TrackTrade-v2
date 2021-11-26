@@ -1,6 +1,6 @@
 import HeaderText from "components/HeaderText";
 import Toolbar from "components/Toolbar";
-import TradeIdeaCard from "components/TradeIdeaCard";
+import TradeIdeaCard from "components/cards/TradeIdeaCard";
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import {
