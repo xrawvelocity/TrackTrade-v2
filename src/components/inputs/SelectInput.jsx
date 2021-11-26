@@ -9,6 +9,7 @@ const SelectInput = ({
     style,
     label = "Sort By:",
     options = [],
+    ...rest
 }) => {
     const styles = makeStyles(() => ({
         select: {
@@ -36,9 +37,9 @@ const SelectInput = ({
     const classes = styles();
     return (
         <div className={classes.select}>
-            <FormControl className={classes.field} size="small">
+            <FormControl className={classes.field} size="small" {...rest}>
                 <InputLabel>{label}</InputLabel>
-                <Select onChange={handleChange} size="small" label={label}>
+                <Select {...rest} size="small" label={label}>
                     {options.map((each) => {
                         return (
                             <MenuItem

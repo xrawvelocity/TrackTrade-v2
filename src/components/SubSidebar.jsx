@@ -67,7 +67,7 @@ export default function SubSideBar({ obj, loc, header }) {
                     >
                         <Typography
                             sx={{
-                                fontSize: "3.5rem",
+                                fontSize: "3rem",
                                 padding: "1.5rem 0 2rem 1.5rem",
                             }}
                             variant="h4"

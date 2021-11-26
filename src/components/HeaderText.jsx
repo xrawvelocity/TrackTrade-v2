@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function HeaderText({ value, RightComponent }) {
     const classes = useStyles();
-    console.log(RightComponent);
     return (
         <Flex
             sx={{
@@ -24,7 +23,7 @@ export default function HeaderText({ value, RightComponent }) {
             <Typography className={classes.text} variant="h4">
                 {value}
             </Typography>
-            {<RightComponent />}
+            <RightComponent />
         </Flex>
     );
 }

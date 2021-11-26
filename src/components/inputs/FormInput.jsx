@@ -10,6 +10,7 @@ const FormInput = ({
     style,
     name,
     label,
+    required = false,
     ...rest
 }) => {
     const styles = makeStyles(() => ({
@@ -39,11 +40,13 @@ const FormInput = ({
         <Field
             className={classes.root}
             name={name}
+            required={required}
             render={({ input, meta }) => (
                 <FormControl
                     className={classes.field}
                     variant="outlined"
                     size="small"
+                    {...input}
                 >
                     <InputLabel>{label}</InputLabel>
                     <OutlinedInput label={label} {...rest} />
