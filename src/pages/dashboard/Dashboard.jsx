@@ -6,11 +6,15 @@ import Flex from "components/Flex";
 import { useAuth } from "context/authCtx";
 import Chart from "components/tools/Chart";
 import News from "components/tools/News";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import PostIdeaModal from "components/modals/PostIdeaModal";
+import PostTradeModal from "components/modals/PostTradeModal";
 
 const Dashboard = (props) => {
     const { currentUser } = useAuth();
+    const [postIdeaOpen, setPostIdeaOpen] = useState(false);
+    const [postTradeOpen, setPostTradeOpen] = useState(false);
 
     return (
         <ContentWrapper contentStyle={{ paddingTop: "30px" }}>
@@ -74,48 +78,40 @@ const Dashboard = (props) => {
                                         justifyContent: "center",
                                     }}
                                 >
-                                    <Link
-                                        to="/profile/post-idea"
-                                        style={{
-                                            width: "100%",
+                                    <Typography
+                                        onClick={() => setPostIdeaOpen(true)}
+                                        sx={{
+                                            color: "#1985d8",
+                                            cursor: "pointer",
+                                            fontSize: "2rem",
+                                            textAlign: "center",
+                                            padding: ".75rem 0",
+
+                                            "&:hover": {
+                                                backgroundColor: "#eee",
+                                            },
                                         }}
                                     >
-                                        <Typography
-                                            sx={{
-                                                color: "#1985d8",
-                                                fontSize: "2rem",
-                                                textAlign: "center",
-                                                padding: ".75rem 0",
+                                        Post Idea
+                                    </Typography>
 
-                                                "&:hover": {
-                                                    backgroundColor: "#eee",
-                                                },
-                                            }}
-                                        >
-                                            Post Idea
-                                        </Typography>
-                                    </Link>
-                                    <Link
-                                        to="/profile/post-trade"
-                                        style={{
-                                            width: "100%",
+                                    <Typography
+                                        onClick={() => setPostTradeOpen(true)}
+                                        sx={{
+                                            color: "#1985d8",
+                                            cursor: "pointer",
+                                            fontSize: "2rem",
+                                            textAlign: "center",
+                                            padding: ".75rem 0",
+
+                                            "&:hover": {
+                                                backgroundColor: "#eee",
+                                            },
                                         }}
                                     >
-                                        <Typography
-                                            sx={{
-                                                color: "#1985d8",
-                                                fontSize: "2rem",
-                                                textAlign: "center",
-                                                padding: ".75rem 0",
+                                        Post Trade
+                                    </Typography>
 
-                                                "&:hover": {
-                                                    backgroundColor: "#eee",
-                                                },
-                                            }}
-                                        >
-                                            Post Trade
-                                        </Typography>
-                                    </Link>
                                     <Link
                                         to="/profile/stats"
                                         style={{
@@ -228,6 +224,14 @@ const Dashboard = (props) => {
                     </Paper>
                 </Flex>
             </Flex>
+            <PostIdeaModal
+                open={postIdeaOpen}
+                onClose={() => setPostIdeaOpen(false)}
+            />
+            <PostTradeModal
+                open={postTradeOpen}
+                onClose={() => setPostTradeOpen(false)}
+            />
         </ContentWrapper>
     );
 };

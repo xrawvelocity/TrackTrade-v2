@@ -97,10 +97,10 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                             Created at:
                         </div>
                         <div className="trade-ideas-card__item-date-content">
-                            {formatTime(tradeIdea.created_at)}
+                            {formatTime(tradeIdea.createdAt)}
                         </div>
                     </div>
-                    {tradeIdea.updatedAt === tradeIdea.created_at ? null : (
+                    {tradeIdea.updatedAt && (
                         <div className="trade-ideas-card__item-date">
                             <div className="trade-ideas-card__item-date-title">
                                 Updated at:

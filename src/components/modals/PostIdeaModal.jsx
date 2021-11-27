@@ -71,7 +71,6 @@ export default function PostIdeaModal({ open, onClose }) {
     };
 
     const onSubmit = async (vals, form) => {
-        console.log(vals, form);
         if (
             !vals.currency ||
             !vals.entry ||
@@ -90,7 +89,7 @@ export default function PostIdeaModal({ open, onClose }) {
         await setDoc(doc(collection(db, "ideas")), {
             trader: currentUser.uid,
             ...vals,
-            created_at: Date.now(),
+            createdAt: Date.now(),
             imageUrl,
         })
             .then(() => {

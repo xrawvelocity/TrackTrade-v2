@@ -1,4 +1,6 @@
 import { Paper } from "@mui/material";
+import { getTraderById } from "firebase/methods";
+import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -13,11 +15,17 @@ import {
 } from "react-share";
 import { formatTime } from "utils/formatTime";
 
-import CustomModal from "./modals/CustomModal";
+import CustomModal from "../modals/CustomModal";
 
 const TradeCard = ({ trade, ...props }) => {
     console.log(trade);
     const [modalOpen, setModalOpen] = useState(false);
+    const [user, setUser] = useState({});
+
+    useAsyncEffect(async () => {
+        let res = await getTraderById(trade.trader);
+        await setUser(res);
+    }, []);
 
     return (
         <>
@@ -36,15 +44,15 @@ const TradeCard = ({ trade, ...props }) => {
                     }}
                     className="trade-ideas-card-link"
                 >
-                    {trade.trade.money > 0 ? (
+                    {/* {trade.money > 0 ? (
                         <div className="trade-ideas-card-win-all">WIN</div>
                     ) : (
                         <div className="trade-ideas-card-loss-all">LOSS</div>
-                    )}
+                    )} */}
 
                     <div className="trade-ideas-card__item">
                         <div className="trade-ideas-card__item-title">
-                            {trade.trade.currency} {trade.trade.kind}
+                            {trade.currency}
                         </div>
                     </div>
                     <div className="trade-ideas-card__item">
@@ -52,7 +60,7 @@ const TradeCard = ({ trade, ...props }) => {
                             Entry:
                         </div>
                         <div className="trade-ideas-card__item-content">
-                            {trade.trade.entry}
+                            {trade.entry}
                         </div>
                     </div>
                     <div className="trade-ideas-card__item">
@@ -60,13 +68,13 @@ const TradeCard = ({ trade, ...props }) => {
                             Close:
                         </div>
                         <div className="trade-ideas-card__item-content">
-                            {trade.trade.close}
+                            {trade.close}
                         </div>
                     </div>
                     <div className="trade-ideas-card__item">
                         <div className="trade-ideas-card__item-title">By:</div>
                         <div className="trade-ideas-card__item-content">
-                            {trade.trade.trader}
+                            {user.username}
                         </div>
                     </div>
                     <div className="trade-ideas-card__item-date">
@@ -74,7 +82,7 @@ const TradeCard = ({ trade, ...props }) => {
                             Created at:
                         </div>
                         <div className="trade-ideas-card__item-date-content">
-                            {formatTime(trade.created_at)}
+                            {formatTime(trade.createdAt)}
                         </div>
                     </div>
                 </div>
@@ -82,10 +90,10 @@ const TradeCard = ({ trade, ...props }) => {
             <CustomModal open={modalOpen} onClose={() => setModalOpen(false)}>
                 <div class="popup">
                     <div class="popup__content" id="content">
-                        {trade.trade.imageUrl ? (
+                        {trade.imageUrl ? (
                             <img
                                 className="popup__left"
-                                src={trade.trade.imageUrl}
+                                src={trade.imageUrl}
                                 alt="Trade image"
                             />
                         ) : null}
@@ -98,23 +106,23 @@ const TradeCard = ({ trade, ...props }) => {
                             </div>
 
                             <h2 class="heading-secondary u-margin-bottom-small">
-                                {trade.trade.currency} {trade.trade.kind}
+                                {trade.currency}
                             </h2>
 
                             <h2 class="heading-secondary u-margin-bottom-small">
-                                Entry: {trade.trade.entry}
+                                Entry: {trade.entry}
                             </h2>
                             <h2 class="heading-secondary u-margin-bottom-small">
-                                Stoploss: {trade.trade.stoploss}
+                                Stoploss: {}
                             </h2>
                             <h2 class="heading-secondary u-margin-bottom-small">
-                                Takeprofit: {trade.trade.takeprofit}
+                                Takeprofit: {}
                             </h2>
 
                             <h2 class="heading-secondary u-margin-bottom-small">
-                                {trade.trade.description ? (
+                                {trade.description ? (
                                     <p class="popup__text">
-                                        {trade.trade.description}
+                                        {trade.description}
                                     </p>
                                 ) : (
                                     <p class="popup__text">
@@ -124,23 +132,21 @@ const TradeCard = ({ trade, ...props }) => {
                             </h2>
                             <p class="popup__text">
                                 Created by:
-                                <Link to={`/profile/${trade.trade.trader}`}>
-                                    {trade.trade.trader}
+                                <Link to={`/profile/${trade.trader}`}>
+                                    {user.username}
                                 </Link>
                             </p>
 
                             <div className="popup_right-sharing-icons">
                                 <FacebookShareButton
-                                    url={`https://www.tracktrade.co/profile/${trade.trade.trader}`}
-                                    title={`${
-                                        trade.trade.trader
-                                    }'s TRADE IDEA:\n${trade.trade.currency} ${
-                                        trade.trade.kind
-                                    }\nEntry: ${trade.trade.entry}\nStoploss: ${
-                                        trade.trade.stoploss
-                                    }\nTakeprofit: ${trade.trade.takeprofit}\n${
-                                        trade.trade.description
-                                            ? `Description: ${trade.trade.description}\n`
+                                    url={`https://www.tracktrade.co/profile/${user.username}`}
+                                    title={`${user.username}'s TRADE IDEA:\n${
+                                        trade.currency
+                                    } \nEntry: ${
+                                        trade.entry
+                                    }\nStoploss: \nTakeprofit: \n${
+                                        trade.description
+                                            ? `Description: ${trade.description}\n`
                                             : ""
                                     }`}
                                     className="popup_right-sharing-icons-button"
@@ -148,16 +154,14 @@ const TradeCard = ({ trade, ...props }) => {
                                     <FacebookIcon size={32} round />
                                 </FacebookShareButton>
                                 <TwitterShareButton
-                                    url={`https://www.tracktrade.co/profile/${trade.trade.trader}`}
-                                    title={`${
-                                        trade.trade.trader
-                                    }'s TRADE IDEA:\n${trade.trade.currency} ${
-                                        trade.trade.kind
-                                    }\nEntry: ${trade.trade.entry}\nStoploss: ${
-                                        trade.trade.stoploss
-                                    }\nTakeprofit: ${trade.trade.takeprofit}\n${
-                                        trade.trade.description
-                                            ? `Description: ${trade.trade.description}\n`
+                                    url={`https://www.tracktrade.co/profile/${user.username}`}
+                                    title={`${user.username}'s TRADE IDEA:\n${
+                                        trade.currency
+                                    } \nEntry: ${
+                                        trade.entry
+                                    }\nStoploss: \nTakeprofit: \n${
+                                        trade.description
+                                            ? `Description: ${trade.description}\n`
                                             : ""
                                     }`}
                                     className="popup_right-sharing-icons-button"
@@ -165,16 +169,14 @@ const TradeCard = ({ trade, ...props }) => {
                                     <TwitterIcon size={32} round />
                                 </TwitterShareButton>
                                 <TelegramShareButton
-                                    url={`https://www.tracktrade.co/profile/${trade.trade.trader}`}
-                                    title={`${
-                                        trade.trade.trader
-                                    }'s TRADE IDEA:\n${trade.trade.currency} ${
-                                        trade.trade.kind
-                                    }\nEntry: ${trade.trade.entry}\nStoploss: ${
-                                        trade.trade.stoploss
-                                    }\nTakeprofit: ${trade.trade.takeprofit}\n${
-                                        trade.trade.description
-                                            ? `Description: ${trade.trade.description}\n`
+                                    url={`https://www.tracktrade.co/profile/${user.username}`}
+                                    title={`${user.username}'s TRADE IDEA:\n${
+                                        trade.currency
+                                    } \nEntry: ${
+                                        trade.entry
+                                    }\nStoploss: \nTakeprofit: \n${
+                                        trade.description
+                                            ? `Description: ${trade.description}\n`
                                             : ""
                                     }`}
                                     className="popup_right-sharing-icons-button"
@@ -182,16 +184,14 @@ const TradeCard = ({ trade, ...props }) => {
                                     <TelegramIcon size={32} round />
                                 </TelegramShareButton>
                                 <WhatsappShareButton
-                                    url={`https://www.tracktrade.co/profile/${trade.trade.trader}`}
-                                    title={`${
-                                        trade.trade.trader
-                                    }'s TRADE IDEA:\n${trade.trade.currency} ${
-                                        trade.trade.kind
-                                    }\nEntry: ${trade.trade.entry}\nStoploss: ${
-                                        trade.trade.stoploss
-                                    }\nTakeprofit: ${trade.trade.takeprofit}\n${
-                                        trade.trade.description
-                                            ? `Description: ${trade.trade.description}\n`
+                                    url={`https://www.tracktrade.co/profile/${user.username}`}
+                                    title={`${user.username}'s TRADE IDEA:\n${
+                                        trade.currency
+                                    } \nEntry: ${
+                                        trade.entry
+                                    }\nStoploss: \nTakeprofit: \n${
+                                        trade.description
+                                            ? `Description: ${trade.description}\n`
                                             : ""
                                     }`}
                                     className="popup_right-sharing-icons-button"

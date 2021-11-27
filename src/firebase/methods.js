@@ -28,19 +28,38 @@ export const getAllTraders = async () => {
 };
 
 export const getYourIdeas = async (id) => {
-    const docSnap = await query(
-        doc(collection(db, "ideas")),
-        where("trader", "==", id)
+    const querySnap = await getDocs(
+        query(collection(db, "ideas"), where("trader", "==", id))
     );
-
-    if (docSnap.exists()) {
-        console.log(docSnap.data());
-        return docSnap.data();
-    } else return [];
+    let all = [];
+    querySnap.forEach((doc) => {
+        all.push(doc.data());
+    });
+    return all;
 };
 
 export const getAllIdeas = async () => {
     const querySnap = await getDocs(collection(db, "ideas"));
+    let all = [];
+    querySnap.forEach((doc) => {
+        all.push(doc.data());
+    });
+    return all;
+};
+
+export const getYourTrades = async (id) => {
+    const querySnap = await getDocs(
+        query(collection(db, "trades"), where("trader", "==", id))
+    );
+    let all = [];
+    querySnap.forEach((doc) => {
+        all.push(doc.data());
+    });
+    return all;
+};
+
+export const getAllTrades = async () => {
+    const querySnap = await getDocs(collection(db, "trades"));
     let all = [];
     querySnap.forEach((doc) => {
         all.push(doc.data());

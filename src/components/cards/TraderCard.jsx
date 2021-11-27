@@ -1,10 +1,12 @@
+import { Paper } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 import { formatTime } from "utils/formatTime";
 
 const TraderCard = ({ trader }) => {
     return (
         <Link className="home-card" to={`/profile/${trader.username}`}>
-            <div className="trade-ideas-card">
+            <Paper className="trade-ideas-card">
                 <div className="trade-ideas-card-more">visit profile</div>
 
                 <div className="trade-ideas-card-link">
@@ -26,36 +28,36 @@ const TraderCard = ({ trader }) => {
                             </div>
                         </div>
                     </div>
-                    {/* {trader.created_at && (
-                  <div className="trade-ideas-card__item">
-                    <div className="trade-ideas-card__item-title">
-                      User since:
+                    {trader.createdAt && (
+                        <div className="trade-ideas-card__item">
+                            <div className="trade-ideas-card__item-title">
+                                User since:
+                            </div>
+                            <div className="trade-ideas-card__item-content">
+                                {formatTime(trader.createdAt)}
+                            </div>
+                        </div>
+                    )}
+                    {/* {winLossRatio(trader.username) && ( */}
+                    <div className="trade-ideas-card__item">
+                        <div className="trade-ideas-card__item-title">
+                            Win Loss Ratio:
+                        </div>
+                        <div className="trade-ideas-card__item-content">
+                            {/* {winLossRatio(trader.username)} */}
+                        </div>
                     </div>
-                    <div className="trade-ideas-card__item-content">
-                      {formatTime(trader.created_at)}
+                    {/* )} */}
+                    {/* {totalTrades(trader.username) ? ( */}
+                    <div className="trade-ideas-card__item">
+                        <div className="trade-ideas-card__item-title">
+                            Total Trades:
+                        </div>
+                        <div className="trade-ideas-card__item-content">
+                            {/* {totalTrades(trader.username)} */}
+                        </div>
                     </div>
-                  </div>
-                )} */}
-                    {/* {winLossRatio(trader.username) && (
-                  <div className="trade-ideas-card__item">
-                    <div className="trade-ideas-card__item-title">
-                      Win Loss Ratio:
-                    </div>
-                    <div className="trade-ideas-card__item-content">
-                      {winLossRatio(trader.username)}
-                    </div>
-                  </div>
-                )}
-                {totalTrades(trader.username) ? (
-                  <div className="trade-ideas-card__item">
-                    <div className="trade-ideas-card__item-title">
-                      Total Trades:
-                    </div>
-                    <div className="trade-ideas-card__item-content">
-                      {totalTrades(trader.username)}
-                    </div>
-                  </div>
-                ) : (
+                    {/* ) : (
                   <div className="trade-ideas-card__item">
                     <div className="trade-ideas-card__item-title">
                       This user has no trades posted
@@ -63,7 +65,7 @@ const TraderCard = ({ trader }) => {
                   </div>
                 )} */}
                 </div>
-            </div>
+            </Paper>
         </Link>
     );
 };

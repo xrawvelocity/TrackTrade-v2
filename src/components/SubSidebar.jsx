@@ -29,10 +29,11 @@ export default function SubSideBar({ obj, loc, header }) {
                 selected={selected.split("/")[2] === each.url}
                 sx={{
                     fontSize: "15px",
-                    color:
+                    color: "#fff",
+                    borderRight:
                         selected.split("/")[2] === each.url
-                            ? "#2ba7fa"
-                            : "#fff",
+                            ? "5px solid #2ba7fa"
+                            : "none",
                     "&:hover": {
                         color: "#2ba7fa",
                     },

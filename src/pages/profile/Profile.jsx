@@ -13,6 +13,7 @@ import { Typography } from "@mui/material";
 
 import userDefault from "../../images/userdefault.png";
 import { Box } from "@mui/system";
+import UserAvatar from "components/UserAvatar";
 
 // redux imports
 const Profile = (props) => {
@@ -41,21 +42,6 @@ const Profile = (props) => {
         },
     ];
 
-    const loadAvatar = () => {
-        return (
-            <img
-                style={{
-                    objectFit: "cover",
-                    height: "100%",
-                    width: "100%",
-                    zIndex: "-20",
-                }}
-                src={userData.avatar ? userData.avatar : userDefault}
-                alt="Avatar"
-            />
-        );
-    };
-
     const RightComponent = () => {
         return (
             <Flex sx={{ alignItems: "center" }}>
@@ -80,7 +66,7 @@ const Profile = (props) => {
                         },
                     }}
                 >
-                    {loadAvatar()}
+                    <UserAvatar imageUrl={userData.avatar} />
                     <Box
                         sx={{
                             backgroundColor: "rgba(34, 34, 34, 0.8)",

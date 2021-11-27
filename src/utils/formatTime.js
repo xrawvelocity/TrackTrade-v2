@@ -1,3 +1,6 @@
+import moment from "moment";
+
 export const formatTime = (time) => {
-    return String(new Date(time)).substring(0, 24);
+    console.log(time);
+    return moment(time).format("MM/DD/YYYY hh:mm A");
 };

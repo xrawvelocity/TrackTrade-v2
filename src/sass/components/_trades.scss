@@ -1,11 +1,5 @@
 .trade {
     &-ideas {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, 35rem);
-        margin: auto;
-        width: auto;
-        gap: 5rem 5rem;
-
         &-card {
             &-link {
                 &,
@@ -18,7 +12,7 @@
             }
 
             border: 1px solid rgba(153, 153, 153, 0.3);
-
+            width: 100%;
             border-radius: 2px;
             display: flex;
             flex-direction: column;

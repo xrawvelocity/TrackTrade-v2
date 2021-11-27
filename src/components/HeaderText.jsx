@@ -23,7 +23,7 @@ export default function HeaderText({ value, RightComponent }) {
             <Typography className={classes.text} variant="h4">
                 {value}
             </Typography>
-            <RightComponent />
+            {RightComponent && <RightComponent />}
         </Flex>
     );
 }

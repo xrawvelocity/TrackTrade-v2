@@ -155,3 +155,26 @@ main {
 .MuiTooltip-tooltip {
     font-size: 1.2rem !important;
 }
+
+.MuiDataGrid-columnSeparator {
+    display: none !important;
+}
+
+.MuiDataGrid-columnHeaderTitleContainer {
+    padding-left: 0 !important;
+}
+
+.MuiDataGrid-menuList {
+    & > * {
+        font-size: 1.4rem !important;
+    }
+}
+
+.MuiDataGrid-menuIcon {
+    & > * > * {
+        font-size: 1.6rem !important;
+    }
+}
+
+.MuiDataGrid-filterForm {
+}
