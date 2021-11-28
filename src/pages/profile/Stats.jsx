@@ -1,4 +1,4 @@
-import HeaderText from "components/HeaderText";
+import HeaderText from "components/partials/HeaderText";
 import Toolbar from "components/Toolbar";
 import React from "react";
 

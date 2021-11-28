@@ -1,10 +1,10 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import ContentWrapper from "components/ContentWrapper";
+import ContentWrapper from "components/partials/ContentWrapper";
 import Flex from "components/Flex";
-import ProtectedRoute from "components/ProtectedRoute";
+import ProtectedRoute from "components/partials/ProtectedRoute";
 import SubSideBar from "components/SubSidebar";
-import UserAvatar from "components/UserAvatar";
+import UserAvatar from "components/partials/UserAvatar";
 import { getTraderById, updateAvatar, uploadImage } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useEffect, useState } from "react";

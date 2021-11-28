@@ -1,6 +1,6 @@
-import ContentWrapper from "components/ContentWrapper";
+import ContentWrapper from "components/partials/ContentWrapper";
 import Flex from "components/Flex";
-import ProtectedRoute from "components/ProtectedRoute";
+import ProtectedRoute from "components/partials/ProtectedRoute";
 import SubSideBar from "components/SubSidebar";
 import React from "react";
 import { Switch } from "react-router-dom";

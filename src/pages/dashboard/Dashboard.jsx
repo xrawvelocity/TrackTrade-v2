@@ -1,7 +1,7 @@
 import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import CustomBar from "components/charts/Bar";
-import ContentWrapper from "components/ContentWrapper";
+import ContentWrapper from "components/partials/ContentWrapper";
 import Flex from "components/Flex";
 import { useAuth } from "context/authCtx";
 import Chart from "components/tools/Chart";

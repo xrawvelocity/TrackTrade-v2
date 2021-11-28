@@ -1,6 +1,6 @@
 import { CssBaseline } from "@mui/material";
-import ProtectedRoute from "components/ProtectedRoute";
-import Sidebar from "components/Sidebar";
+import ProtectedRoute from "components/partials/ProtectedRoute";
+import Sidebar from "components/partials/Sidebar";
 import Browse from "pages/browse/Browse";
 import React from "react";
 import { Route, Switch } from "react-router-dom";

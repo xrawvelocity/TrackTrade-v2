@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import TradeIdeaCard from "components/cards/TradeIdeaCard";
-import HeaderText from "components/HeaderText";
+import HeaderText from "components/partials/HeaderText";
 import Loading from "components/Loading";
 import PostIdeaModal from "components/modals/PostIdeaModal";
 import Toolbar from "components/Toolbar";

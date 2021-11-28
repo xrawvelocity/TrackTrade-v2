@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import TradeCard from "components/cards/TradeCard";
-import HeaderText from "components/HeaderText";
+import HeaderText from "components/partials/HeaderText";
 import Loading from "components/Loading";
 import PostTradeModal from "components/modals/PostTradeModal";
 import Toolbar from "components/Toolbar";
