@@ -1,5 +1,4 @@
 import { collection, doc, setDoc } from "@firebase/firestore";
-import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
 import { Close as CloseIcon } from "@mui/icons-material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {
@@ -13,14 +12,16 @@ import {
 import Flex from "components/Flex";
 import FormInput from "components/inputs/FormInput";
 import SelectInput from "components/inputs/SelectInput";
-import MainButton from "components/MainButton";
+import MainButton from "components/buttons/MainButton";
 import { SYMBOLS } from "enums/symbols";
+import { uploadImage } from "firebase/methods";
 import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
+import { calculateForex } from "utils/calculateForex";
 
 import { useAuth } from "../../context/authCtx";
+import { db } from "../../firebase/firebase";
 import { useAsyncEffect } from "../../hooks/use-async-effect";
-import { db, storage } from "../../firebase/firebase";
 import CustomModal from "./CustomModal";
 
 export default function PostTradeModal({ open, onClose }) {
@@ -45,33 +46,14 @@ export default function PostTradeModal({ open, onClose }) {
         setTradeImage({});
     };
 
-    const uploadImage = (file) => {
-        if (!file) return;
-        const storageRef = ref(
-            storage,
-            `/files/${currentUser.uid}/trades/${file.name}`
-        );
-        const uploadTask = uploadBytesResumable(storageRef, file);
-
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const prog = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                setProgress(prog);
-            },
-            (err) => console.log(err),
-            async () => {
-                await getDownloadURL(uploadTask.snapshot.ref).then((url) =>
-                    setImageUrl(url)
-                );
-            }
-        );
-    };
-
     const onSubmit = async (vals, form) => {
-        if (!vals.currency || !vals.entry || !vals.close || !vals.lot) {
+        if (
+            !vals.currency ||
+            !vals.entry ||
+            !vals.close ||
+            !vals.lot ||
+            !vals.type
+        ) {
             setError("Please fill out all the required fields");
             setProgress(null);
             setTimeout(() => {
@@ -79,14 +61,24 @@ export default function PostTradeModal({ open, onClose }) {
             }, 2000);
             return;
         }
+
         if (tradeImage.name) {
-            await uploadImage(tradeImage);
+            await uploadImage(
+                tradeImage,
+                `/files/${currentUser.uid}/ideas/${tradeImage.name}`,
+                setProgress,
+                setImageUrl
+            );
+            console.log("1", tradeImage, imageUrl);
         }
+        console.log("2", calculateForex(vals));
+        // let calculatedValues = calculateForex(vals);
         await setDoc(doc(collection(db, "trades")), {
             trader: currentUser.uid,
-            ...vals,
             createdAt: Date.now(),
             imageUrl,
+            ...vals,
+            // ...calculatedValues,
         })
             .then(() => {
                 setSuccess(true);
@@ -157,12 +149,37 @@ export default function PostTradeModal({ open, onClose }) {
                                         )}
                                     />
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={3}>
                                     <FormInput
                                         name="lot"
                                         label="Lot Size"
                                         type="number"
                                         required
+                                    />
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <Field
+                                        required
+                                        name="type"
+                                        render={({ input, meta }) => (
+                                            <SelectInput
+                                                error={
+                                                    meta.touched && meta.error
+                                                }
+                                                options={[
+                                                    {
+                                                        value: "sell",
+                                                        text: "Sell",
+                                                    },
+                                                    {
+                                                        value: "buy",
+                                                        text: "Buy",
+                                                    },
+                                                ]}
+                                                label="Type"
+                                                {...input}
+                                            />
+                                        )}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>

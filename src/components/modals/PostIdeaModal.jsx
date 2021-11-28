@@ -1,5 +1,4 @@
 import { collection, doc, setDoc } from "@firebase/firestore";
-import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
 import { Close as CloseIcon } from "@mui/icons-material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {
@@ -13,14 +12,15 @@ import {
 import Flex from "components/Flex";
 import FormInput from "components/inputs/FormInput";
 import SelectInput from "components/inputs/SelectInput";
-import MainButton from "components/MainButton";
+import MainButton from "components/buttons/MainButton";
 import { SYMBOLS } from "enums/symbols";
+import { uploadImage } from "firebase/methods";
 import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
 
 import { useAuth } from "../../context/authCtx";
+import { db } from "../../firebase/firebase";
 import { useAsyncEffect } from "../../hooks/use-async-effect";
-import { db, storage } from "../../firebase/firebase";
 import CustomModal from "./CustomModal";
 
 export default function PostIdeaModal({ open, onClose }) {
@@ -45,31 +45,6 @@ export default function PostIdeaModal({ open, onClose }) {
         setIdeaImage({});
     };
 
-    const uploadImage = (file) => {
-        if (!file) return;
-        const storageRef = ref(
-            storage,
-            `/files/${currentUser.uid}/ideas/${file.name}`
-        );
-        const uploadTask = uploadBytesResumable(storageRef, file);
-
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const prog = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                setProgress(prog);
-            },
-            (err) => console.log(err),
-            async () => {
-                await getDownloadURL(uploadTask.snapshot.ref).then((url) =>
-                    setImageUrl(url)
-                );
-            }
-        );
-    };
-
     const onSubmit = async (vals, form) => {
         if (
             !vals.currency ||
@@ -84,7 +59,13 @@ export default function PostIdeaModal({ open, onClose }) {
             return;
         }
         if (ideaImage.name) {
-            await uploadImage(ideaImage);
+            await uploadImage(
+                ideaImage,
+                `/files/${currentUser.uid}/ideas/${ideaImage.name}`,
+                setProgress,
+                setImageUrl
+            );
+            console.log("1", imageUrl);
         }
         await setDoc(doc(collection(db, "ideas")), {
             trader: currentUser.uid,

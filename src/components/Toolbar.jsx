@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import Flex from "./Flex";
-import MainButton from "./MainButton";
+import MainButton from "./buttons/MainButton";
 import Search from "./Search";
 import SelectInput from "./inputs/SelectInput";
 
