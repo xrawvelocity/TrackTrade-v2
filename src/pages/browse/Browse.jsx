@@ -1,7 +1,7 @@
 import ContentWrapper from "components/partials/ContentWrapper";
-import Flex from "components/Flex";
+import Flex from "components/partials/Flex";
 import ProtectedRoute from "components/partials/ProtectedRoute";
-import SubSideBar from "components/SubSidebar";
+import SubSideBar from "components/partials/SubSidebar";
 import React from "react";
 import { Switch } from "react-router-dom";
 import AllIdeas from "./AllIdeas";

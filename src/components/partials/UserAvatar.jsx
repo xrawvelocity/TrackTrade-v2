@@ -1,5 +1,5 @@
 import React from "react";
-import userDefault from "../images/userdefault.png";
+import userDefault from "../../images/userdefault.png";
 
 const UserAvatar = ({ imageUrl, style }) => {
     return (

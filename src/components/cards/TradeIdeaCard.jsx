@@ -16,7 +16,7 @@ import {
 import { formatTime } from "utils/formatTime";
 import { tradeKind } from "utils/tradeKind";
 
-import Flex from "../Flex";
+import Flex from "../partials/Flex";
 import CustomModal from "../modals/CustomModal";
 
 const TradeIdeaCard = ({ tradeIdea, ...props }) => {

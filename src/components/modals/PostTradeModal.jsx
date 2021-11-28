@@ -9,7 +9,7 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import Flex from "components/Flex";
+import Flex from "components/partials/Flex";
 import FormInput from "components/inputs/FormInput";
 import SelectInput from "components/inputs/SelectInput";
 import MainButton from "components/buttons/MainButton";

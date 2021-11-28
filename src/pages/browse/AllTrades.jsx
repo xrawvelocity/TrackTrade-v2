@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
 import TradeCard from "components/cards/TradeCard";
 import HeaderText from "components/partials/HeaderText";
-import Loading from "components/Loading";
+import Loading from "components/partials/Loading";
 import PostTradeModal from "components/modals/PostTradeModal";
-import Toolbar from "components/Toolbar";
+import Toolbar from "components/partials/Toolbar";
 import { getAllTrades } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";

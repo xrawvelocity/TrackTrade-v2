@@ -3,21 +3,32 @@ import { makeStyles } from "@mui/styles";
 import { DataGrid } from "@mui/x-data-grid";
 import TradeIdeaCard from "components/cards/TradeIdeaCard";
 import TraderCard from "components/cards/TraderCard";
-import Flex from "components/Flex";
+import Flex from "components/partials/Flex";
 import HeaderText from "components/partials/HeaderText";
-import Loading from "components/Loading";
+import Loading from "components/partials/Loading";
 import MainButton from "components/buttons/MainButton";
 import PostIdeaModal from "components/modals/PostIdeaModal";
-import Toolbar from "components/Toolbar";
+import Toolbar from "components/partials/Toolbar";
 import UserAvatar from "components/partials/UserAvatar";
-import { getAllTraders } from "firebase/methods";
+import {
+    addConnection,
+    getAllTraders,
+    removeConnection,
+} from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import moment from "moment";
 import React, { useState } from "react";
+import SecondaryButton from "components/buttons/SecondaryButton";
+import { useAuth } from "context/authCtx";
+import { useHistory } from "react-router";
 
 const AllTraders = () => {
     const [traders, setTraders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [connectLoading, setConnectLoading] = useState("");
+    const { currentUser, getUserData, userData } = useAuth();
+
+    const history = useHistory();
 
     const useStyles = makeStyles(() => ({
         dataGrid: {
@@ -29,9 +40,25 @@ const AllTraders = () => {
 
     useAsyncEffect(async () => {
         const res = await getAllTraders();
+        console.log(res);
         setTraders(res);
+        await getUserData();
         setLoading(false);
     }, []);
+
+    const handleAddConnection = async (otherId) => {
+        setConnectLoading(otherId);
+        await addConnection(userData.uid, otherId);
+        await getUserData();
+        setConnectLoading("");
+    };
+
+    const handleRemoveConnection = async (otherId) => {
+        setConnectLoading(otherId);
+        await removeConnection(userData.uid, otherId);
+        await getUserData();
+        setConnectLoading("");
+    };
 
     const columns = [
         {
@@ -55,7 +82,16 @@ const AllTraders = () => {
                 );
             },
         },
-        { field: "username", headerName: "Username", flex: 1 },
+        {
+            field: "username",
+            headerName: "Username",
+            flex: 1,
+            renderCell: ({ value }) => {
+                if (userData.username === value) {
+                    return value + " " + "(you)";
+                } else return value;
+            },
+        },
         {
             field: "createdAt",
             headerName: "User Since",
@@ -64,21 +100,60 @@ const AllTraders = () => {
                 return moment(value).format("MM/DD/YYYY hh:mm A");
             },
         },
-        { field: "winLoss", headerName: "Win Loss Ratio", flex: 1 },
-        { field: "totalTrades", headerName: "Total Trades", flex: 1 },
+        { field: "winLoss", headerName: "Win Loss Ratio", flex: 0.75 },
+        { field: "totalTrades", headerName: "Total Trades", flex: 0.75 },
         {
             field: "actions",
             headerName: "",
-            flex: 0.5,
+            flex: 1,
             sortable: false,
             disableColumnMenu: true,
             renderCell: ({ row, value }) => {
-                return (
-                    <Flex>
-                        <MainButton>Connect</MainButton>
-                        <MainButton>Visit Profile</MainButton>
-                    </Flex>
-                );
+                console.log(row);
+                if (row.uid !== currentUser.uid) {
+                    return (
+                        <Flex>
+                            {userData.connections.includes(row.uid) ? (
+                                <MainButton
+                                    loading={connectLoading === row.uid}
+                                    onClick={() =>
+                                        handleRemoveConnection(row.uid)
+                                    }
+                                    sx={{
+                                        fontSize: "1.2rem",
+                                        mr: "2rem",
+                                        padding: "0.75rem 1.25rem 0.6rem",
+                                    }}
+                                >
+                                    Disconnect
+                                </MainButton>
+                            ) : (
+                                <MainButton
+                                    loading={connectLoading === row.uid}
+                                    onClick={() => handleAddConnection(row.uid)}
+                                    sx={{
+                                        fontSize: "1.2rem",
+                                        mr: "2rem",
+                                        padding: "0.75rem 1.25rem 0.6rem",
+                                    }}
+                                >
+                                    Connect
+                                </MainButton>
+                            )}
+                            <SecondaryButton
+                                onClick={() =>
+                                    history.push(`/profile/${row.uid}/ideas`)
+                                }
+                                sx={{
+                                    fontSize: "1.2rem",
+                                    padding: "0.7rem 1.25rem 0.6rem",
+                                }}
+                            >
+                                Visit
+                            </SecondaryButton>
+                        </Flex>
+                    );
+                } else return null;
             },
         },
     ];

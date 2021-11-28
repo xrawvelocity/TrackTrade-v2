@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import ContentWrapper from "components/partials/ContentWrapper";
-import Flex from "components/Flex";
+import Flex from "components/partials/Flex";
 import ProtectedRoute from "components/partials/ProtectedRoute";
-import SubSideBar from "components/SubSidebar";
+import SubSideBar from "components/partials/SubSidebar";
 import UserAvatar from "components/partials/UserAvatar";
 import { getTraderById, updateAvatar, uploadImage } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";

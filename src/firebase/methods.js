@@ -6,6 +6,8 @@ import {
     updateDoc,
     query,
     where,
+    arrayUnion,
+    arrayRemove,
 } from "@firebase/firestore";
 import {
     getDownloadURL,
@@ -118,4 +120,24 @@ export const uploadImage = (file, path, setProgress, setImageUrl) => {
             });
         }
     );
+};
+
+export const addConnection = async (id, otherId) => {
+    try {
+        await updateDoc(doc(db, "users", id), {
+            connections: arrayUnion(otherId),
+        });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const removeConnection = async (id, otherId) => {
+    try {
+        await updateDoc(doc(db, "users", id), {
+            connections: arrayRemove(otherId),
+        });
+    } catch (err) {
+        console.log(err);
+    }
 };

@@ -1,5 +1,5 @@
 import HeaderText from "components/partials/HeaderText";
-import Toolbar from "components/Toolbar";
+import Toolbar from "components/partials/Toolbar";
 import React from "react";
 
 const Connections = ({ RightComponent }) => {

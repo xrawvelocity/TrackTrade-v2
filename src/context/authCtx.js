@@ -32,6 +32,7 @@ const AuthProvider = ({ children }) => {
                 email,
                 username,
                 avatar: "",
+                connections: [],
                 uid: user.user.uid,
                 createdAt: Date.now(),
             });

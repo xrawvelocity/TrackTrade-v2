@@ -1,9 +1,9 @@
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import Flex from "./Flex";
-import MainButton from "./buttons/MainButton";
-import Search from "./inputs/Search";
-import SelectInput from "./inputs/SelectInput";
+import MainButton from "../buttons/MainButton";
+import Search from "../inputs/Search";
+import SelectInput from "../inputs/SelectInput";
 
 const Toolbar = ({
     onSearch,

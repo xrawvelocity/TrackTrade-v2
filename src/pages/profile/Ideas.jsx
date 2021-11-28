@@ -1,10 +1,10 @@
 import { Grid, Typography } from "@mui/material";
 import TradeIdeaCard from "components/cards/TradeIdeaCard";
-import Flex from "components/Flex";
+import Flex from "components/partials/Flex";
 import HeaderText from "components/partials/HeaderText";
-import Loading from "components/Loading";
+import Loading from "components/partials/Loading";
 import PostIdeaModal from "components/modals/PostIdeaModal";
-import Toolbar from "components/Toolbar";
+import Toolbar from "components/partials/Toolbar";
 import { useAuth } from "context/authCtx";
 import { getUserIdeas } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
