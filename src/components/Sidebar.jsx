@@ -29,7 +29,11 @@ const Sidebar = (props) => {
 
     const topSidebarObj = [
         { text: "Dashboard", path: "/dashboard", icon: <HomeIcon /> },
-        { text: "Profile", path: "/profile/ideas", icon: <PersonIcon /> },
+        {
+            text: "Profile",
+            path: `/profile/${currentUser?.uid}/ideas`,
+            icon: <PersonIcon />,
+        },
         { text: "Messages", path: "/messages", icon: <ChatIcon /> },
         { text: "Browse", path: "/browse/all-ideas", icon: <SearchIcon /> },
     ];

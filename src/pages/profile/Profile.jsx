@@ -1,46 +1,89 @@
+import { Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import ContentWrapper from "components/ContentWrapper";
 import Flex from "components/Flex";
 import ProtectedRoute from "components/ProtectedRoute";
 import SubSideBar from "components/SubSidebar";
-import React, { useEffect } from "react";
-import { Switch } from "react-router-dom";
-import Ideas from "./Ideas";
-import Trades from "./Trades";
-import Stats from "./Stats";
-import Connections from "./Connections";
-import { useAuth } from "../../context/authCtx";
-import { Typography } from "@mui/material";
-
-import userDefault from "../../images/userdefault.png";
-import { Box } from "@mui/system";
 import UserAvatar from "components/UserAvatar";
+import { getTraderById, updateAvatar, uploadImage } from "firebase/methods";
+import { useAsyncEffect } from "hooks/use-async-effect";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { Switch } from "react-router-dom";
 
-// redux imports
-const Profile = (props) => {
+import { useAuth } from "../../context/authCtx";
+import Connections from "./Connections";
+import Ideas from "./Ideas";
+import Stats from "./Stats";
+import Trades from "./Trades";
+
+const Profile = () => {
     const { currentUser, getUserData, userData } = useAuth();
-    useEffect(() => {
-        getUserData();
-        console.log(userData);
-    }, []);
-    // getUserData();
-    const subSideBarObj = [
-        {
-            text: "Ideas",
-            url: "ideas",
-        },
-        {
-            text: "Trades",
-            url: "trades",
-        },
-        {
-            text: "Stats",
-            url: "stats",
-        },
-        {
-            text: "Connections",
-            url: "connections",
-        },
-    ];
+    const [imageUrl, setImageUrl] = useState("");
+    const [progress, setProgress] = useState(null);
+
+    const params = useParams();
+
+    const isProfile = currentUser.uid === params.userId;
+
+    useAsyncEffect(async () => {
+        if (isProfile) {
+            getUserData();
+        } else {
+            const res = getTraderById(params.userId);
+            console.log(res);
+        }
+    }, [isProfile]);
+
+    useAsyncEffect(async () => {
+        if (progress === 100) {
+            await updateAvatar(currentUser.uid, imageUrl, userData.avatar);
+            getUserData();
+        }
+    }, [progress]);
+
+    const subSideBarObj = isProfile
+        ? [
+              {
+                  text: "Ideas",
+                  url: "ideas",
+              },
+              {
+                  text: "Trades",
+                  url: "trades",
+              },
+              {
+                  text: "Stats",
+                  url: "stats",
+              },
+              {
+                  text: "Connections",
+                  url: "connections",
+              },
+          ]
+        : [
+              {
+                  text: "Ideas",
+                  url: "ideas",
+              },
+              {
+                  text: "Trades",
+                  url: "trades",
+              },
+              {
+                  text: "Stats",
+                  url: "stats",
+              },
+          ];
+
+    const handleImage = async (file) => {
+        await uploadImage(
+            file,
+            `/files/${currentUser.uid}/avatar/${file.name}`,
+            setProgress,
+            setImageUrl
+        );
+    };
 
     const RightComponent = () => {
         return (
@@ -66,7 +109,13 @@ const Profile = (props) => {
                         },
                     }}
                 >
-                    <UserAvatar imageUrl={userData.avatar} />
+                    <UserAvatar
+                        imageUrl={
+                            progress && progress !== 100
+                                ? "https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
+                                : userData.avatar
+                        }
+                    />
                     <Box
                         sx={{
                             backgroundColor: "rgba(34, 34, 34, 0.8)",
@@ -85,11 +134,13 @@ const Profile = (props) => {
                             </label>
                             <input
                                 style={{ display: "none" }}
-                                // onChange={handleSubmit}
+                                onChange={(e) => {
+                                    handleImage(e.target.files[0]);
+                                }}
                                 type="file"
                                 id="img"
                                 name="img"
-                                accept="image/*"
+                                accept="image/png, image/gif, image/jpeg"
                             />
                         </form>
                     </Box>
@@ -100,19 +151,23 @@ const Profile = (props) => {
 
     return (
         <Flex>
-            <SubSideBar header="Profile" obj={subSideBarObj} loc="profile" />
+            <SubSideBar
+                header="Profile"
+                obj={subSideBarObj}
+                loc={`profile/${params.userOd}`}
+            />
             <ContentWrapper contentStyle={{ padding: "30px 50px 60px 300px" }}>
                 <Switch>
-                    <ProtectedRoute path="/profile/ideas">
+                    <ProtectedRoute path="/profile/:userId/ideas">
                         <Ideas RightComponent={RightComponent} />
                     </ProtectedRoute>
-                    <ProtectedRoute path="/profile/trades">
+                    <ProtectedRoute path="/profile/:userId/trades">
                         <Trades RightComponent={RightComponent} />
                     </ProtectedRoute>
-                    <ProtectedRoute path="/profile/stats">
+                    <ProtectedRoute path="/profile/:userId/stats">
                         <Stats RightComponent={RightComponent} />
                     </ProtectedRoute>
-                    <ProtectedRoute path="/profile/connections">
+                    <ProtectedRoute path="/profile/:userId/connections">
                         <Connections RightComponent={RightComponent} />
                     </ProtectedRoute>
                 </Switch>

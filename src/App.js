@@ -42,7 +42,7 @@ const App = () => {
                 ></ProtectedRoute>
 
                 <ProtectedRoute
-                    path="/profile"
+                    path="/profile/:userId"
                     render={(props) => <Profile {...props} />}
                 ></ProtectedRoute>
 

@@ -149,6 +149,9 @@ main {
   font-size: 1.4rem !important; }
 
 .MuiDataGrid-menuIcon > * > * {
+  font-size: 2rem !important; }
+
+.MuiDataGrid-sortIcon {
   font-size: 1.6rem !important; }
 
 .container {
@@ -1069,7 +1072,7 @@ main {
         width: 90%;
         height: 70vh; } }
   .popup__left {
-    width: 600px;
+    width: auto;
     height: 100%;
     object-fit: contain;
     background-repeat: no-repeat;

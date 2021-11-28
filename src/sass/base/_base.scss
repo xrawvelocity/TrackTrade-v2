@@ -172,8 +172,12 @@ main {
 
 .MuiDataGrid-menuIcon {
     & > * > * {
-        font-size: 1.6rem !important;
+        font-size: 2rem !important;
     }
+}
+
+.MuiDataGrid-sortIcon {
+    font-size: 1.6rem !important;
 }
 
 .MuiDataGrid-filterForm {

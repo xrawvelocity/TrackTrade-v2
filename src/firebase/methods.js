@@ -3,19 +3,46 @@ import {
     doc,
     getDoc,
     getDocs,
+    updateDoc,
     query,
     where,
 } from "@firebase/firestore";
-import { db } from "./firebase";
+import {
+    getDownloadURL,
+    ref,
+    uploadBytesResumable,
+    deleteObject,
+    listAll,
+} from "@firebase/storage";
+import { db, storage } from "./firebase";
 
 export const getTraderById = async (id) => {
     const docSnap = await getDoc(doc(collection(db, "users"), id));
 
     if (docSnap.exists()) {
-        console.log(docSnap.data());
         let user = docSnap.data();
         return user;
     } else return { username: "Unknown" };
+};
+
+export const updateAvatar = async (id, imageUrl = "", previous) => {
+    console.log(previous);
+    try {
+        if (previous) {
+            let storageRef = ref(storage, `files/${id}/avatar`);
+            let previousAvatar;
+            await listAll(storageRef).then(
+                (res) => (previousAvatar = res.items[0]._location.path_)
+            );
+            console.log(previousAvatar);
+            await deleteObject(ref(storage, previousAvatar))
+                .then(() => console.log("deleted"))
+                .catch((err) => console.log(err));
+        }
+        await updateDoc(doc(db, "users", id), { avatar: imageUrl });
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 export const getAllTraders = async () => {
@@ -27,7 +54,7 @@ export const getAllTraders = async () => {
     return all;
 };
 
-export const getYourIdeas = async (id) => {
+export const getUserIdeas = async (id) => {
     const querySnap = await getDocs(
         query(collection(db, "ideas"), where("trader", "==", id))
     );
@@ -47,7 +74,7 @@ export const getAllIdeas = async () => {
     return all;
 };
 
-export const getYourTrades = async (id) => {
+export const getUserTrades = async (id) => {
     const querySnap = await getDocs(
         query(collection(db, "trades"), where("trader", "==", id))
     );
@@ -65,4 +92,30 @@ export const getAllTrades = async () => {
         all.push(doc.data());
     });
     return all;
+};
+
+export const uploadImage = (file, path, setProgress, setImageUrl) => {
+    if (!file) return;
+    const storageRef = ref(
+        storage,
+        `${path}_${(Math.random() * 90000 + 1000).toFixed(0)}`
+    );
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+            const prog = Math.round(
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            setProgress(prog - 1);
+        },
+        (err) => console.log(err),
+        async () => {
+            await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                setImageUrl(url);
+                setProgress(100);
+            });
+        }
+    );
 };

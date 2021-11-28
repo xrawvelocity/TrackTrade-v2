@@ -18,7 +18,6 @@ import { formatTime } from "utils/formatTime";
 import CustomModal from "../modals/CustomModal";
 
 const TradeCard = ({ trade, ...props }) => {
-    console.log(trade);
     const [modalOpen, setModalOpen] = useState(false);
     const [user, setUser] = useState({});
 

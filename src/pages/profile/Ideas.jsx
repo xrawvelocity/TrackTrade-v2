@@ -6,7 +6,7 @@ import Loading from "components/Loading";
 import PostIdeaModal from "components/modals/PostIdeaModal";
 import Toolbar from "components/Toolbar";
 import { useAuth } from "context/authCtx";
-import { getYourIdeas } from "firebase/methods";
+import { getUserIdeas } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
 
@@ -17,7 +17,7 @@ const Ideas = ({ RightComponent }) => {
     const { currentUser } = useAuth();
 
     useAsyncEffect(async () => {
-        const res = await getYourIdeas(currentUser.uid);
+        const res = await getUserIdeas(currentUser.uid);
         setTradeIdeas(res);
         setLoading(false);
     }, [postIdeaOpen]);

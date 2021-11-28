@@ -17,7 +17,7 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState({ email: "" });
+    const [currentUser, setCurrentUser] = useState({ email: "", uid: "" });
     const [userData, setUserData] = useState({ email: "" });
     const [loading, setLoading] = useState(true);
 
@@ -28,17 +28,13 @@ const AuthProvider = ({ children }) => {
                 email,
                 password
             );
-            const res = await setDoc(
-                doc(collection(db, "users"), user.user.uid),
-                {
-                    email,
-                    username,
-                    avatar: "",
-                    uid: user.user.uid,
-                    createdAt: Date.now(),
-                }
-            );
-            console.log(user, res);
+            await setDoc(doc(collection(db, "users"), user.user.uid), {
+                email,
+                username,
+                avatar: "",
+                uid: user.user.uid,
+                createdAt: Date.now(),
+            });
         } catch (err) {
             console.log(err);
         }
@@ -46,12 +42,7 @@ const AuthProvider = ({ children }) => {
 
     const logIn = async (email, password) => {
         try {
-            const user = await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-            console.log(user);
+            await signInWithEmailAndPassword(auth, email, password);
         } catch (err) {
             console.log(err);
         }
@@ -62,6 +53,7 @@ const AuthProvider = ({ children }) => {
     };
 
     onAuthStateChanged(auth, async (user) => {
+        console.log(user);
         setCurrentUser(user);
         setLoading(false);
     });
@@ -72,7 +64,6 @@ const AuthProvider = ({ children }) => {
         );
         if (docSnap.exists()) {
             setUserData(docSnap.data());
-            console.log("Document data:", docSnap.data());
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");

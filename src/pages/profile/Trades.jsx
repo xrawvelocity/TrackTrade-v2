@@ -6,7 +6,7 @@ import Loading from "components/Loading";
 import PostTradeModal from "components/modals/PostTradeModal";
 import Toolbar from "components/Toolbar";
 import { useAuth } from "context/authCtx";
-import { getYourTrades } from "firebase/methods";
+import { getUserTrades } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
 
@@ -17,7 +17,7 @@ const Trades = ({ RightComponent }) => {
     const { currentUser } = useAuth();
 
     useAsyncEffect(async () => {
-        const res = await getYourTrades(currentUser.uid);
+        const res = await getUserTrades(currentUser.uid);
         setTrades(res);
         setLoading(false);
     }, [postTradeOpen]);
