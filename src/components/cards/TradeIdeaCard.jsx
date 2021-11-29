@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Divider, Paper, Typography } from "@mui/material";
 import { getTraderById } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
@@ -18,8 +18,25 @@ import { tradeKind } from "utils/tradeKind";
 
 import Flex from "../partials/Flex";
 import CustomModal from "../modals/CustomModal";
+import { COLORS } from "enums/colors";
+import moment from "moment";
+import UserAvatar from "components/partials/UserAvatar";
 
 const TradeIdeaCard = ({ tradeIdea, ...props }) => {
+    console.log(tradeIdea);
+    const {
+        type,
+        currency,
+        risk,
+        stopLoss,
+        entry,
+        takeProfit1,
+        takeProfit2,
+        description,
+        imageUrl,
+        trader,
+        createdAt,
+    } = tradeIdea;
     const [modalOpen, setModalOpen] = useState(false);
     const [edit, setEdit] = useState();
     const [isProfile, setIsProfile] = useState(false);
@@ -40,76 +57,142 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
     };
     return (
         <>
-            <Paper elevation={4} className="trade-ideas-card">
-                <div
-                    onClick={() => {
-                        setModalOpen(true);
-                    }}
-                    className="trade-ideas-card-more"
-                >
-                    click for more info
-                </div>
-                <div
-                    className="trade-ideas-card-link"
-                    onClick={() => {
-                        setModalOpen(true);
-                    }}
-                >
-                    <div className="trade-ideas-card__item">
-                        <div className="trade-ideas-card__item-title">
-                            {tradeIdea.currency} {tradeKind(tradeIdea)}
-                        </div>
-                    </div>
+            <Paper elevation={4}>
+                <Flex sx={{ flexDirection: "column" }}>
+                    <div>
+                        <Flex
+                            sx={{
+                                p: "2rem",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <Flex sx={{ alignItems: "center" }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: "2.2rem",
+                                        fontWeight: "700",
 
-                    <div className="trade-ideas-card__item">
-                        <div className="trade-ideas-card__item-title">
-                            Entry:
-                        </div>
-                        <div className="trade-ideas-card__item-content">
-                            {tradeIdea.entry}
-                        </div>
+                                        color:
+                                            type === "sell"
+                                                ? COLORS.red
+                                                : COLORS.green,
+                                    }}
+                                >
+                                    {type.toUpperCase()}
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        fontSize: "2rem",
+                                        fontWeight: "500",
+                                        ml: "2rem",
+                                    }}
+                                >
+                                    {currency}
+                                </Typography>
+                            </Flex>
+                            <Flex sx={{ alignItems: "center" }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: "2rem",
+                                        fontWeight: "500",
+                                        mr: "2rem",
+                                    }}
+                                >
+                                    {user.username}
+                                </Typography>
+                                <UserAvatar
+                                    imageUrl={user.avatar}
+                                    style={{
+                                        width: "50px",
+                                        height: "50px",
+                                        zIndex: "20",
+                                    }}
+                                />
+                            </Flex>
+                        </Flex>
+                        <Divider />
                     </div>
-                    <div className="trade-ideas-card__item">
-                        <div className="trade-ideas-card__item-title">
-                            Stoploss:
-                        </div>
-                        <div className="trade-ideas-card__item-content">
-                            {tradeIdea.stopLoss}
-                        </div>
-                    </div>
-                    <div className="trade-ideas-card__item">
-                        <div className="trade-ideas-card__item-title">
-                            Takeprofit:
-                        </div>
-                        <div className="trade-ideas-card__item-content">
-                            {tradeIdea.takeProfit}
-                        </div>
-                    </div>
-                    <div className="trade-ideas-card__item">
-                        <div className="trade-ideas-card__item-title">By:</div>
-                        <div className="trade-ideas-card__item-content">
-                            {user.username}
-                        </div>
-                    </div>
-                    <div className="trade-ideas-card__item-date">
-                        <div className="trade-ideas-card__item-date-title">
-                            Created at:
-                        </div>
-                        <div className="trade-ideas-card__item-date-content">
-                            {formatTime(tradeIdea.createdAt)}
-                        </div>
-                    </div>
-                    {tradeIdea.updatedAt && (
-                        <div className="trade-ideas-card__item-date">
-                            <div className="trade-ideas-card__item-date-title">
-                                Updated at:
-                            </div>
-                            <div className="trade-ideas-card__item-date-content">
-                                {formatTime(tradeIdea.updatedAt)}
-                            </div>
-                        </div>
+                    {imageUrl && (
+                        <Flex sx={{ height: "250px", width: "100%" }}>
+                            <img
+                                src={imageUrl}
+                                alt="Trade Idea Image"
+                                style={{ objectFit: "cover", width: "100%" }}
+                            />
+                            <Divider />
+                        </Flex>
                     )}
-                </div>
+                    <Flex sx={{ flexDirection: "column" }}>
+                        <Flex
+                            sx={{ alignItems: "center", p: "2rem", pb: "1rem" }}
+                        >
+                            <Typography
+                                sx={{ fontSize: "1.6rem", fontWeight: "500" }}
+                            >
+                                Entry:
+                            </Typography>
+                            <Typography sx={{ fontSize: "1.6rem", ml: "1rem" }}>
+                                {entry}
+                            </Typography>
+                        </Flex>
+                        <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
+                            <Typography
+                                sx={{ fontSize: "1.6rem", fontWeight: "500" }}
+                            >
+                                Stop Loss:
+                            </Typography>
+                            <Typography sx={{ fontSize: "1.6rem", ml: "1rem" }}>
+                                {stopLoss}
+                            </Typography>
+                        </Flex>
+                        <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
+                            <Typography
+                                sx={{ fontSize: "1.6rem", fontWeight: "500" }}
+                            >
+                                Take Profit 1:
+                            </Typography>
+                            <Typography sx={{ fontSize: "1.6rem", ml: "1rem" }}>
+                                {takeProfit1}
+                            </Typography>
+                        </Flex>
+                        {takeProfit2 && (
+                            <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Take Profit 2:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {takeProfit2}
+                                </Typography>
+                            </Flex>
+                        )}
+                        <Flex
+                            sx={{
+                                alignItems: "center",
+                                p: "1rem 2rem",
+                                pb: "2rem",
+                            }}
+                        >
+                            <Typography
+                                sx={{ fontSize: "1.6rem", fontWeight: "500" }}
+                            >
+                                Published:
+                            </Typography>
+                            <Typography sx={{ fontSize: "1.6rem", ml: "1rem" }}>
+                                {moment(createdAt).format("dddd, MMM Do YYYY")}
+                            </Typography>
+                        </Flex>
+                        {/* <Divider /> */}
+                    </Flex>
+                    {/* here would go the liking, commenting, and sharing buttons */}
+                </Flex>
             </Paper>
             <CustomModal open={modalOpen} onClose={() => setModalOpen(false)}>
                 <div class="popup">

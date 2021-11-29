@@ -26,7 +26,7 @@ const AllIdeas = () => {
                 <Grid container spacing={3}>
                     {tradeIdeas.map((each) => {
                         return (
-                            <Grid item xs={2.5}>
+                            <Grid item xs={4}>
                                 <TradeIdeaCard tradeIdea={each} />
                             </Grid>
                         );
