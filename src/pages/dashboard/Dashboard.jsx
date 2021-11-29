@@ -1,15 +1,14 @@
 import { Paper, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import CustomBar from "components/charts/Bar";
-import ContentWrapper from "components/partials/ContentWrapper";
-import Flex from "components/partials/Flex";
-import { useAuth } from "context/authCtx";
-import Chart from "components/tools/Chart";
-import News from "components/tools/News";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import PostIdeaModal from "components/modals/PostIdeaModal";
 import PostTradeModal from "components/modals/PostTradeModal";
+import ContentWrapper from "components/partials/ContentWrapper";
+import Flex from "components/partials/Flex";
+import Chart from "components/tools/Chart";
+import News from "components/tools/News";
+import { useAuth } from "context/authCtx";
+import CurrencyPerformance from "components/charts/CurrencyPerformance";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Dashboard = (props) => {
     const { currentUser } = useAuth();
@@ -113,7 +112,7 @@ const Dashboard = (props) => {
                                     </Typography>
 
                                     <Link
-                                        to="/profile/stats"
+                                        to={`/profile/${currentUser.uid}/stats`}
                                         style={{
                                             width: "100%",
                                         }}
@@ -166,7 +165,7 @@ const Dashboard = (props) => {
                                         fontSize: "2.4rem",
                                         fontWeight: "600",
                                         marginTop: "1rem",
-                                        color: "#2c1",
+                                        color: "#0cb577",
                                     }}
                                 >
                                     $1024.41
@@ -186,42 +185,7 @@ const Dashboard = (props) => {
                     >
                         <News />
                     </Paper>
-                    <Paper
-                        elevation={4}
-                        style={{
-                            height: "395px",
-                            width: "45%",
-                            borderRadius: "3px",
-                            marginTop: "6rem",
-                        }}
-                    >
-                        <Flex
-                            sx={{
-                                flexDirection: "column",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Typography
-                                sx={{
-                                    fontSize: "3rem",
-                                    fontWeight: "600",
-                                    margin: "2rem 0",
-                                }}
-                            >
-                                Currency Performance
-                            </Typography>
-                            <Box
-                                sx={{
-                                    height: "300px",
-                                    width: "100%",
-                                    fontSize: "1.8rem",
-                                }}
-                            >
-                                {/* <CustomPie /> */}
-                                <CustomBar />
-                            </Box>
-                        </Flex>
-                    </Paper>
+                    <CurrencyPerformance />
                 </Flex>
             </Flex>
             <PostIdeaModal

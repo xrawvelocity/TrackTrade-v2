@@ -30,12 +30,36 @@ export default function PostIdeaModal({ open, onClose }) {
     const [progress, setProgress] = useState(null);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
+    const [values, setValues] = useState({});
     const [imageUrl, setImageUrl] = useState("");
 
     useAsyncEffect(async () => {
         await getUserData();
-        console.log(userData);
     }, []);
+
+    useAsyncEffect(async () => {
+        if (imageUrl) {
+            console.log("3", "pls wrk");
+            await setDoc(doc(collection(db, "ideas")), {
+                trader: currentUser.uid,
+                ...values,
+                createdAt: Date.now(),
+                imageUrl,
+            })
+                .then(() => {
+                    setSuccess(true);
+                    setTimeout(() => {
+                        handleClose();
+                    }, 2000);
+                })
+                .catch((err) => {
+                    setError("There was an error, please try again");
+                    setTimeout(() => {
+                        setError("");
+                    }, 2000);
+                });
+        }
+    }, [imageUrl]);
 
     const handleClose = () => {
         onClose();
@@ -50,7 +74,8 @@ export default function PostIdeaModal({ open, onClose }) {
             !vals.currency ||
             !vals.entry ||
             !vals.stopLoss ||
-            !vals.takeProfit
+            !vals.takeProfit1 ||
+            !vals.type
         ) {
             setError("Please fill out all the required fields");
             setTimeout(() => {
@@ -58,6 +83,7 @@ export default function PostIdeaModal({ open, onClose }) {
             }, 2000);
             return;
         }
+        await setValues(vals);
         if (ideaImage.name) {
             await uploadImage(
                 ideaImage,
@@ -67,24 +93,27 @@ export default function PostIdeaModal({ open, onClose }) {
             );
             console.log("1", imageUrl);
         }
-        await setDoc(doc(collection(db, "ideas")), {
-            trader: currentUser.uid,
-            ...vals,
-            createdAt: Date.now(),
-            imageUrl,
-        })
-            .then(() => {
-                setSuccess(true);
-                setTimeout(() => {
-                    handleClose();
-                }, 2000);
+        if (!ideaImage.name) {
+            console.log("2", "no image");
+            await setDoc(doc(collection(db, "ideas")), {
+                trader: currentUser.uid,
+                ...vals,
+                createdAt: Date.now(),
+                imageUrl,
             })
-            .catch((err) => {
-                setError("There was an error, please try again");
-                setTimeout(() => {
-                    setError("");
-                }, 2000);
-            });
+                .then(() => {
+                    setSuccess(true);
+                    setTimeout(() => {
+                        handleClose();
+                    }, 2000);
+                })
+                .catch((err) => {
+                    setError("There was an error, please try again");
+                    setTimeout(() => {
+                        setError("");
+                    }, 2000);
+                });
+        }
     };
 
     return (
@@ -123,7 +152,7 @@ export default function PostIdeaModal({ open, onClose }) {
                             <Grid
                                 container
                                 spacing={3}
-                                style={{ padding: "2rem", width: "500px" }}
+                                style={{ padding: "2rem", width: "550px" }}
                             >
                                 <Grid item xs={6}>
                                     <Field
@@ -135,7 +164,61 @@ export default function PostIdeaModal({ open, onClose }) {
                                                     meta.touched && meta.error
                                                 }
                                                 options={SYMBOLS}
-                                                label="Currency"
+                                                label="Currency *"
+                                                {...input}
+                                            />
+                                        )}
+                                    />
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <Field
+                                        required
+                                        name="type"
+                                        render={({ input, meta }) => (
+                                            <SelectInput
+                                                error={
+                                                    meta.touched && meta.error
+                                                }
+                                                options={[
+                                                    {
+                                                        value: "sell",
+                                                        text: "Sell",
+                                                    },
+                                                    {
+                                                        value: "buy",
+                                                        text: "Buy",
+                                                    },
+                                                ]}
+                                                label="Type *"
+                                                {...input}
+                                            />
+                                        )}
+                                    />
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <Field
+                                        required
+                                        name="risk"
+                                        render={({ input, meta }) => (
+                                            <SelectInput
+                                                error={
+                                                    meta.touched && meta.error
+                                                }
+                                                options={[
+                                                    {
+                                                        value: "low",
+                                                        text: "Low",
+                                                    },
+                                                    {
+                                                        value: "normal",
+                                                        text: "Normal",
+                                                    },
+                                                    {
+                                                        value: "big",
+                                                        text: "Big",
+                                                    },
+                                                ]}
+                                                label="Risk"
                                                 {...input}
                                             />
                                         )}
@@ -144,23 +227,32 @@ export default function PostIdeaModal({ open, onClose }) {
                                 <Grid item xs={6}>
                                     <FormInput
                                         name="entry"
-                                        label="Entry"
+                                        label="Entry *"
                                         type="number"
                                         required
                                     />
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput
-                                        name="takeProfit"
-                                        label="Take Profit"
-                                        type="number"
-                                        required
-                                    />
-                                </Grid>
+
                                 <Grid item xs={6}>
                                     <FormInput
                                         name="stopLoss"
-                                        label="Stop Loss"
+                                        label="Stop Loss *"
+                                        type="number"
+                                        required
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <FormInput
+                                        name="takeProfit1"
+                                        label="Take Profit 1 *"
+                                        type="number"
+                                        required
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <FormInput
+                                        name="takeProfit2"
+                                        label="Take Profit 2"
                                         type="number"
                                         required
                                     />
@@ -233,7 +325,7 @@ export default function PostIdeaModal({ open, onClose }) {
                                                         setIdeaImage({})
                                                     }
                                                     sx={{
-                                                        color: "#c21",
+                                                        color: "#a91832",
                                                         ml: "1rem",
                                                         mb: "2px",
                                                     }}
@@ -263,14 +355,10 @@ export default function PostIdeaModal({ open, onClose }) {
                                 <MainButton
                                     variant="contained"
                                     color="primary"
-                                    disabled={progress && progress !== 100}
+                                    loading={progress && progress !== 100}
                                     onClick={() => form.submit()}
                                 >
-                                    {progress && progress !== 100 ? (
-                                        <CircularProgress value={progress} />
-                                    ) : (
-                                        "Post Trade Idea"
-                                    )}
+                                    Post Trade Idea
                                 </MainButton>
                                 {success && (
                                     <Alert

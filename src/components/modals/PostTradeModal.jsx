@@ -32,11 +32,38 @@ export default function PostTradeModal({ open, onClose }) {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const [calculatedValues, setCalculatedValues] = useState({});
+    const [values, setValues] = useState({});
 
     useAsyncEffect(async () => {
         await getUserData();
         console.log(userData);
     }, []);
+
+    useAsyncEffect(async () => {
+        if (imageUrl) {
+            await setDoc(doc(collection(db, "trades")), {
+                trader: currentUser.uid,
+                createdAt: Date.now(),
+                imageUrl,
+                ...values,
+                ...calculatedValues,
+            })
+                .then(() => {
+                    setSuccess(true);
+                    setTimeout(() => {
+                        handleClose();
+                    }, 2000);
+                })
+                .catch((err) => {
+                    setError("There was an error, please try again");
+                    setProgress(null);
+                    setTimeout(() => {
+                        setError("");
+                    }, 2000);
+                });
+        }
+    }, [imageUrl]);
 
     const handleClose = () => {
         onClose();
@@ -61,7 +88,9 @@ export default function PostTradeModal({ open, onClose }) {
             }, 2000);
             return;
         }
-
+        console.log("2", calculateForex(vals));
+        await setCalculatedValues(calculateForex(vals));
+        await setValues(vals);
         if (tradeImage.name) {
             await uploadImage(
                 tradeImage,
@@ -69,30 +98,30 @@ export default function PostTradeModal({ open, onClose }) {
                 setProgress,
                 setImageUrl
             );
-            console.log("1", tradeImage, imageUrl);
+            console.log("1", imageUrl);
         }
-        console.log("2", calculateForex(vals));
-        // let calculatedValues = calculateForex(vals);
-        await setDoc(doc(collection(db, "trades")), {
-            trader: currentUser.uid,
-            createdAt: Date.now(),
-            imageUrl,
-            ...vals,
-            // ...calculatedValues,
-        })
-            .then(() => {
-                setSuccess(true);
-                setTimeout(() => {
-                    handleClose();
-                }, 2000);
+        if (!tradeImage) {
+            await setDoc(doc(collection(db, "trades")), {
+                trader: currentUser.uid,
+                createdAt: Date.now(),
+                imageUrl,
+                ...vals,
+                ...calculatedValues,
             })
-            .catch((err) => {
-                setError("There was an error, please try again");
-                setProgress(null);
-                setTimeout(() => {
-                    setError("");
-                }, 2000);
-            });
+                .then(() => {
+                    setSuccess(true);
+                    setTimeout(() => {
+                        handleClose();
+                    }, 2000);
+                })
+                .catch((err) => {
+                    setError("There was an error, please try again");
+                    setProgress(null);
+                    setTimeout(() => {
+                        setError("");
+                    }, 2000);
+                });
+        }
     };
 
     return (
@@ -150,14 +179,6 @@ export default function PostTradeModal({ open, onClose }) {
                                     />
                                 </Grid>
                                 <Grid item xs={3}>
-                                    <FormInput
-                                        name="lot"
-                                        label="Lot Size"
-                                        type="number"
-                                        required
-                                    />
-                                </Grid>
-                                <Grid item xs={3}>
                                     <Field
                                         required
                                         name="type"
@@ -182,6 +203,15 @@ export default function PostTradeModal({ open, onClose }) {
                                         )}
                                     />
                                 </Grid>
+                                <Grid item xs={3}>
+                                    <FormInput
+                                        name="lot"
+                                        label="Lot Size"
+                                        type="number"
+                                        required
+                                    />
+                                </Grid>
+
                                 <Grid item xs={6}>
                                     <FormInput
                                         name="entry"
@@ -266,7 +296,7 @@ export default function PostTradeModal({ open, onClose }) {
                                                         setTradeImage({})
                                                     }
                                                     sx={{
-                                                        color: "#c21",
+                                                        color: "#a91832",
                                                         ml: "1rem",
                                                         mb: "2px",
                                                     }}
@@ -296,14 +326,10 @@ export default function PostTradeModal({ open, onClose }) {
                                 <MainButton
                                     variant="contained"
                                     color="primary"
-                                    disabled={progress}
+                                    loading={progress && progress !== 100}
                                     onClick={() => form.submit()}
                                 >
-                                    {progress ? (
-                                        <CircularProgress value={progress} />
-                                    ) : (
-                                        "Post Trade"
-                                    )}
+                                    Post Trade
                                 </MainButton>
                                 {success && (
                                     <Alert

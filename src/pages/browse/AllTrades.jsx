@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import TradeCard from "components/cards/TradeCard";
 import HeaderText from "components/partials/HeaderText";
 import Loading from "components/partials/Loading";
@@ -7,6 +7,7 @@ import Toolbar from "components/partials/Toolbar";
 import { getAllTrades } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
+import Flex from "components/partials/Flex";
 
 const AllTrades = () => {
     const [postTradeOpen, setPostTradeOpen] = useState(false);
@@ -17,20 +18,36 @@ const AllTrades = () => {
         const res = await getAllTrades();
         setTrades(res);
         setLoading(false);
-    }, []);
+    }, [postTradeOpen]);
 
     const loadContent = () => {
-        return (
-            <Grid container spacing={3}>
-                {trades.map((each) => {
-                    return (
-                        <Grid item xs={2.5}>
-                            <TradeCard trade={each} />
-                        </Grid>
-                    );
-                })}
-            </Grid>
-        );
+        if (trades.length) {
+            return (
+                <Grid container spacing={3}>
+                    {trades.map((each) => {
+                        return (
+                            <Grid item xs={2.5}>
+                                <TradeCard trade={each} />
+                            </Grid>
+                        );
+                    })}
+                </Grid>
+            );
+        } else {
+            return (
+                <Flex
+                    sx={{
+                        width: "100%",
+                        justifyContent: "center",
+                        mt: "25rem",
+                    }}
+                >
+                    <Typography sx={{ fontSize: "2.2rem" }}>
+                        No trades have been posted here yet
+                    </Typography>
+                </Flex>
+            );
+        }
     };
 
     return (

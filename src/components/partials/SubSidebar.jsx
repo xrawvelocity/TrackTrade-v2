@@ -26,14 +26,13 @@ export default function SubSideBar({ obj, loc, header }) {
     const showItems = () => {
         return obj.map((each, i) => (
             <ListItem
-                selected={selected.split("/")[2] === each.url}
+                selected={selected.includes(each.url)}
                 sx={{
                     fontSize: "15px",
                     color: "#fff",
-                    borderRight:
-                        selected.split("/")[2] === each.url
-                            ? "5px solid #2ba7fa"
-                            : "none",
+                    borderRight: selected.includes(each.url)
+                        ? "5px solid #2ba7fa"
+                        : "none",
                     "&:hover": {
                         color: "#2ba7fa",
                     },

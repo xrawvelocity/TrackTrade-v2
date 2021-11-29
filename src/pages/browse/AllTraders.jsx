@@ -13,6 +13,7 @@ import UserAvatar from "components/partials/UserAvatar";
 import {
     addConnection,
     getAllTraders,
+    getUserTrades,
     removeConnection,
 } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
@@ -21,9 +22,11 @@ import React, { useState } from "react";
 import SecondaryButton from "components/buttons/SecondaryButton";
 import { useAuth } from "context/authCtx";
 import { useHistory } from "react-router";
+import { calculateWinLoss } from "utils/tradeStats";
 
 const AllTraders = () => {
     const [traders, setTraders] = useState([]);
+    const [gridRows, setGridRows] = useState([]);
     const [loading, setLoading] = useState(true);
     const [connectLoading, setConnectLoading] = useState("");
     const { currentUser, getUserData, userData } = useAuth();
@@ -41,8 +44,10 @@ const AllTraders = () => {
     useAsyncEffect(async () => {
         const res = await getAllTraders();
         console.log(res);
-        setTraders(res);
+        await setTraders(res);
         await getUserData();
+        let rows = getRows();
+        console.log(rows);
         setLoading(false);
     }, []);
 
@@ -59,6 +64,30 @@ const AllTraders = () => {
         await getUserData();
         setConnectLoading("");
     };
+
+    const getStats = async (id) => {
+        let trades = await getUserTrades(id);
+
+        return {
+            winLoss: calculateWinLoss(trades),
+            totalTrades: trades.length,
+        };
+    };
+
+    const getRows = () => {
+        return traders.map((each, index) => {
+            let { winLoss, totalTrades } = getStats(each.uid);
+
+            return {
+                ...each,
+                id: index,
+                winLoss,
+                totalTrades,
+            };
+        });
+    };
+
+    console.log(getRows());
 
     const columns = [
         {
@@ -112,34 +141,45 @@ const AllTraders = () => {
                 console.log(row);
                 if (row.uid !== currentUser.uid) {
                     return (
-                        <Flex>
-                            {userData.connections.includes(row.uid) ? (
-                                <MainButton
-                                    loading={connectLoading === row.uid}
-                                    onClick={() =>
-                                        handleRemoveConnection(row.uid)
-                                    }
-                                    sx={{
-                                        fontSize: "1.2rem",
-                                        mr: "2rem",
-                                        padding: "0.75rem 1.25rem 0.6rem",
-                                    }}
-                                >
-                                    Disconnect
-                                </MainButton>
-                            ) : (
-                                <MainButton
-                                    loading={connectLoading === row.uid}
-                                    onClick={() => handleAddConnection(row.uid)}
-                                    sx={{
-                                        fontSize: "1.2rem",
-                                        mr: "2rem",
-                                        padding: "0.75rem 1.25rem 0.6rem",
-                                    }}
-                                >
-                                    Connect
-                                </MainButton>
-                            )}
+                        <Flex
+                            sx={{ width: "100%", justifyContent: "flex-start" }}
+                        >
+                            <Flex
+                                sx={{
+                                    width: "50%",
+                                    justifyContent: "flex-end",
+                                }}
+                            >
+                                {userData.connections.includes(row.uid) ? (
+                                    <MainButton
+                                        loading={connectLoading === row.uid}
+                                        onClick={() =>
+                                            handleRemoveConnection(row.uid)
+                                        }
+                                        sx={{
+                                            fontSize: "1.2rem",
+                                            mr: "2rem",
+                                            padding: "0.75rem 1.25rem 0.6rem",
+                                        }}
+                                    >
+                                        Disconnect
+                                    </MainButton>
+                                ) : (
+                                    <MainButton
+                                        loading={connectLoading === row.uid}
+                                        onClick={() =>
+                                            handleAddConnection(row.uid)
+                                        }
+                                        sx={{
+                                            fontSize: "1.2rem",
+                                            mr: "2rem",
+                                            padding: "0.75rem 1.25rem 0.6rem",
+                                        }}
+                                    >
+                                        Connect
+                                    </MainButton>
+                                )}
+                            </Flex>
                             <SecondaryButton
                                 onClick={() =>
                                     history.push(`/profile/${row.uid}/ideas`)
@@ -159,7 +199,7 @@ const AllTraders = () => {
     ];
 
     return (
-        <div>
+        <>
             <HeaderText value="All Traders" />
             <Toolbar
                 // onSearch={this.searchTradeIdeas}
@@ -178,13 +218,11 @@ const AllTraders = () => {
                         className={classes.dataGrid}
                         disableSelectionOnClick
                         columns={columns}
-                        rows={traders.map((each, index) => {
-                            return { ...each, id: index };
-                        })}
+                        rows={gridRows}
                     />
                 </Paper>
             )}
-        </div>
+        </>
     );
 };
 

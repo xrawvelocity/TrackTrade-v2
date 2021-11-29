@@ -1,23 +1,24 @@
 import { Grid, Typography } from "@mui/material";
 import TradeCard from "components/cards/TradeCard";
+import PostTradeModal from "components/modals/PostTradeModal";
 import Flex from "components/partials/Flex";
 import HeaderText from "components/partials/HeaderText";
 import Loading from "components/partials/Loading";
-import PostTradeModal from "components/modals/PostTradeModal";
 import Toolbar from "components/partials/Toolbar";
-import { useAuth } from "context/authCtx";
 import { getUserTrades } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
+import { useParams } from "react-router";
 
-const Trades = ({ RightComponent }) => {
+const Trades = ({ RightComponent, isProfile, otherUser }) => {
     const [postTradeOpen, setPostTradeOpen] = useState(false);
     const [trades, setTrades] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { currentUser } = useAuth();
+
+    const params = useParams();
 
     useAsyncEffect(async () => {
-        const res = await getUserTrades(currentUser.uid);
+        const res = await getUserTrades(params.userId);
         setTrades(res);
         setLoading(false);
     }, [postTradeOpen]);
@@ -53,8 +54,13 @@ const Trades = ({ RightComponent }) => {
     };
 
     return (
-        <div>
-            <HeaderText value="Your Trades" RightComponent={RightComponent} />
+        <>
+            <HeaderText
+                value={
+                    isProfile ? "Your Trades" : `${otherUser.username}'s Trades`
+                }
+                RightComponent={RightComponent}
+            />
             <Toolbar
                 // onSearch={this.searchTradeTrades}
                 searchPlaceholder={"Search for trades by their symbol..."}
@@ -66,14 +72,14 @@ const Trades = ({ RightComponent }) => {
                     { text: "Buys", value: "buy" },
                 ]}
                 onButton={() => setPostTradeOpen(true)}
-                buttonText="Post Trade"
+                buttonText={isProfile ? "Post Trade" : ""}
             />
-            {loading ? <Loading sx={{ mt: "25rem" }} /> : loadContent()}
+            {loading ? <Loading /> : loadContent()}
             <PostTradeModal
                 open={postTradeOpen}
                 onClose={() => setPostTradeOpen(false)}
             />
-        </div>
+        </>
     );
 };
 

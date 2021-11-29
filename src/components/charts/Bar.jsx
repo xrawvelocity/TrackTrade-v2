@@ -18,6 +18,9 @@ const CustomBar = () => {
         { name: "EUR/USD", amount: 124.32 },
         { name: "EUR/GBP", amount: 22.13 },
         { name: "USD/CAD", amount: -57.45 },
+        { name: "EUR/JPY", amount: 24.32 },
+        { name: "GBP/USD", amount: 52.13 },
+        { name: "NZD/USD", amount: -124.33 },
         { name: "US30", amount: 231.12 },
         { name: "NAS100", amount: 31.12 },
     ];
@@ -27,9 +30,9 @@ const CustomBar = () => {
         let fill;
 
         if (amount > 0) {
-            fill = "#2c1";
+            fill = "#0cb577";
         } else {
-            fill = "#c21";
+            fill = "#a91832";
         }
 
         return <Rectangle {...props} fill={fill} />;
@@ -46,12 +49,12 @@ const CustomBar = () => {
                     bottom: 5,
                 }}
             >
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid stroke="#00000015" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <ReferenceLine y={0} stroke="#000" />
-                <Bar dataKey="amount" shape={CustomBarShape} barSize={40} />
+                <Bar dataKey="amount" shape={CustomBarShape} barSize={50} />
             </BarChart>
         </ResponsiveContainer>
     );

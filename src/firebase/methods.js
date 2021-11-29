@@ -24,7 +24,7 @@ export const getTraderById = async (id) => {
     if (docSnap.exists()) {
         let user = docSnap.data();
         return user;
-    } else return { username: "Unknown" };
+    } else return { username: "" };
 };
 
 export const updateAvatar = async (id, imageUrl = "", previous) => {
@@ -116,8 +116,10 @@ export const uploadImage = (file, path, setProgress, setImageUrl) => {
         async () => {
             await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                 setImageUrl(url);
-                setProgress(100);
+                console.log("111", url);
             });
+            console.log("111", "done");
+            setProgress(100);
         }
     );
 };
@@ -140,4 +142,20 @@ export const removeConnection = async (id, otherId) => {
     } catch (err) {
         console.log(err);
     }
+};
+
+export const getAllConnections = async (connections) => {
+    console.log(connections);
+    let all = [];
+    if (connections.length) {
+        const q = await query(
+            collection(db, "users"),
+            where("uid", "in", connections)
+        );
+        const querySnap = await getDocs(q);
+        querySnap.forEach((doc) => {
+            all.push(doc.data());
+        });
+    }
+    return all;
 };

@@ -10,14 +10,14 @@ import {
 
 const CustomPie = ({
     data = [
-        { name: "Wins", value: 300, color: "#2c1" },
-        { name: "Losses", value: 200, color: "#c21" },
+        { name: "Wins", value: 70, color: "#0cb577" },
+        { name: "Losses", value: 30, color: "#a91832" },
     ],
     colors,
     legendProps = {
-        layout: "vertical",
-        align: "right",
-        verticalAlign: "middle",
+        layout: "horizontal",
+        align: "center",
+        verticalAlign: "bottom",
     },
 }) => {
     return (

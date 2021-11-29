@@ -18,7 +18,11 @@ export const useAuth = () => {
 
 const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState({ email: "", uid: "" });
-    const [userData, setUserData] = useState({ email: "" });
+    const [userData, setUserData] = useState({
+        email: "",
+        avatar: "",
+        connections: [],
+    });
     const [loading, setLoading] = useState(true);
 
     const signUp = async (email, username, password) => {
@@ -54,7 +58,6 @@ const AuthProvider = ({ children }) => {
     };
 
     onAuthStateChanged(auth, async (user) => {
-        console.log(user);
         setCurrentUser(user);
         setLoading(false);
     });

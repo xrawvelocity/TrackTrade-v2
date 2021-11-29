@@ -20,7 +20,6 @@ import Flex from "../partials/Flex";
 import CustomModal from "../modals/CustomModal";
 
 const TradeIdeaCard = ({ tradeIdea, ...props }) => {
-    console.log(tradeIdea);
     const [modalOpen, setModalOpen] = useState(false);
     const [edit, setEdit] = useState();
     const [isProfile, setIsProfile] = useState(false);
@@ -29,7 +28,7 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
     useAsyncEffect(async () => {
         let res = await getTraderById(tradeIdea.trader);
         await setUser(res);
-    }, []);
+    }, [tradeIdea]);
 
     // setIsProfile(props.checkLogin?.data?.username === tradeIdea.trader);
     const deleteCard = async (id) => {

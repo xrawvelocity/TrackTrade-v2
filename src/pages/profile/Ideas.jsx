@@ -9,15 +9,18 @@ import { useAuth } from "context/authCtx";
 import { getUserIdeas } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
+import { useParams } from "react-router";
 
-const Ideas = ({ RightComponent }) => {
+const Ideas = ({ RightComponent, isProfile, otherUser }) => {
     const [postIdeaOpen, setPostIdeaOpen] = useState(false);
     const [tradeIdeas, setTradeIdeas] = useState([]);
     const [loading, setLoading] = useState(true);
     const { currentUser } = useAuth();
 
+    const params = useParams();
+
     useAsyncEffect(async () => {
-        const res = await getUserIdeas(currentUser.uid);
+        const res = await getUserIdeas(params.userId);
         setTradeIdeas(res);
         setLoading(false);
     }, [postIdeaOpen]);
@@ -28,7 +31,7 @@ const Ideas = ({ RightComponent }) => {
                 <Grid container spacing={3}>
                     {tradeIdeas.map((each) => {
                         return (
-                            <Grid item xs={2}>
+                            <Grid item xs={2.5}>
                                 <TradeIdeaCard tradeIdea={each} />
                             </Grid>
                         );
@@ -53,8 +56,13 @@ const Ideas = ({ RightComponent }) => {
     };
 
     return (
-        <div>
-            <HeaderText value="Your Ideas" RightComponent={RightComponent} />
+        <>
+            <HeaderText
+                value={
+                    isProfile ? "Your Ideas" : `${otherUser.username}'s Ideas`
+                }
+                RightComponent={RightComponent}
+            />
             <Toolbar
                 // onSearch={this.searchTradeIdeas}
                 searchPlaceholder={"Search for trade ideas by their symbol..."}
@@ -66,14 +74,14 @@ const Ideas = ({ RightComponent }) => {
                     { text: "Buys", value: "buy" },
                 ]}
                 onButton={() => setPostIdeaOpen(true)}
-                buttonText="Post Idea"
+                buttonText={isProfile ? "Post Idea" : ""}
             />
-            {loading ? <Loading sx={{ mt: "25rem" }} /> : loadContent()}
+            {loading ? <Loading /> : loadContent()}
             <PostIdeaModal
                 open={postIdeaOpen}
                 onClose={() => setPostIdeaOpen(false)}
             />
-        </div>
+        </>
     );
 };
 

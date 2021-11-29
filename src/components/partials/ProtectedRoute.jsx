@@ -6,7 +6,6 @@ import Loading from "./Loading";
 
 const ProtectedRoute = ({ path, children, exact, ...props }) => {
     const location = useLocation();
-    const [isLoading, setIsLoading] = useState(true);
     const { currentUser, loading } = useAuth();
 
     if (loading) {
