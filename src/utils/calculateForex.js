@@ -1,4 +1,4 @@
-export const calculateForex = (trade) => {
+export const calculateForexTrade = (trade) => {
     let pips;
     let money;
     let win;
@@ -31,4 +31,39 @@ export const calculateForex = (trade) => {
     }
 
     return { pips, money, win };
+};
+
+export const calculateForexIdea = (trade) => {
+    let profit;
+    let loss;
+    let riskReward;
+
+    const isJPY = trade.currency.includes("JPY");
+
+    //sell not jpy
+    if (trade.type === "sell" && !isJPY) {
+        profit = trade.entry * 10000 - trade.takeProfit1 * 10000;
+        loss = trade.stopLoss * 10000 - trade.entry * 10000;
+    }
+    //sell jpy
+    else if (trade.type === "sell" && isJPY) {
+        profit = trade.entry * 100 - trade.takeProfit1 * 100;
+        loss = trade.stopLoss * 100 - trade.entry * 100;
+    }
+    //buy not jpy
+    else if (trade.type === "buy" && !isJPY) {
+        profit = trade.takeProfit1 * 10000 - trade.entry * 10000;
+        loss = trade.entry * 10000 - trade.stopLoss * 10000;
+    }
+    //buy jpy
+    else if (trade.type === "buy" && isJPY) {
+        profit = trade.takeProfit1 * 100 - trade.entry * 100;
+        loss = trade.entry * 100 - trade.stopLoss * 100;
+    }
+
+    riskReward = profit / loss;
+
+    console.log(riskReward);
+
+    return { riskReward };
 };

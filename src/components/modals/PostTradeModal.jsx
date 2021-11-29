@@ -17,7 +17,7 @@ import { SYMBOLS } from "enums/symbols";
 import { uploadImage } from "firebase/methods";
 import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
-import { calculateForex } from "utils/calculateForex";
+import { calculateForex, calculateForexTrade } from "utils/calculateForex";
 
 import { useAuth } from "../../context/authCtx";
 import { db } from "../../firebase/firebase";
@@ -88,8 +88,7 @@ export default function PostTradeModal({ open, onClose }) {
             }, 2000);
             return;
         }
-        console.log("2", calculateForex(vals));
-        await setCalculatedValues(calculateForex(vals));
+        await setCalculatedValues(calculateForexTrade(vals));
         await setValues(vals);
         if (tradeImage.name) {
             await uploadImage(

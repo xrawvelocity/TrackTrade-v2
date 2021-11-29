@@ -36,6 +36,7 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
         imageUrl,
         trader,
         createdAt,
+        riskReward,
     } = tradeIdea;
     const [modalOpen, setModalOpen] = useState(false);
     const [edit, setEdit] = useState();
@@ -75,7 +76,7 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
 
                                         color:
                                             type === "sell"
-                                                ? COLORS.red
+                                                ? "#c21"
                                                 : COLORS.green,
                                     }}
                                 >
@@ -123,40 +124,29 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                             <Divider />
                         </Flex>
                     )}
-                    <Flex sx={{ flexDirection: "column" }}>
-                        <Flex
-                            sx={{ alignItems: "center", p: "2rem", pb: "1rem" }}
-                        >
-                            <Typography
-                                sx={{ fontSize: "1.6rem", fontWeight: "500" }}
+                    <Flex>
+                        <Flex sx={{ flexDirection: "column" }}>
+                            <Flex
+                                sx={{
+                                    alignItems: "center",
+                                    p: "2rem",
+                                    pb: "1rem",
+                                }}
                             >
-                                Entry:
-                            </Typography>
-                            <Typography sx={{ fontSize: "1.6rem", ml: "1rem" }}>
-                                {entry}
-                            </Typography>
-                        </Flex>
-                        <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
-                            <Typography
-                                sx={{ fontSize: "1.6rem", fontWeight: "500" }}
-                            >
-                                Stop Loss:
-                            </Typography>
-                            <Typography sx={{ fontSize: "1.6rem", ml: "1rem" }}>
-                                {stopLoss}
-                            </Typography>
-                        </Flex>
-                        <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
-                            <Typography
-                                sx={{ fontSize: "1.6rem", fontWeight: "500" }}
-                            >
-                                Take Profit 1:
-                            </Typography>
-                            <Typography sx={{ fontSize: "1.6rem", ml: "1rem" }}>
-                                {takeProfit1}
-                            </Typography>
-                        </Flex>
-                        {takeProfit2 && (
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Entry:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {entry}
+                                </Typography>
+                            </Flex>
                             <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
                                 <Typography
                                     sx={{
@@ -164,32 +154,110 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                         fontWeight: "500",
                                     }}
                                 >
-                                    Take Profit 2:
+                                    Stop Loss:
                                 </Typography>
                                 <Typography
                                     sx={{ fontSize: "1.6rem", ml: "1rem" }}
                                 >
-                                    {takeProfit2}
+                                    {stopLoss}
                                 </Typography>
                             </Flex>
-                        )}
-                        <Flex
-                            sx={{
-                                alignItems: "center",
-                                p: "1rem 2rem",
-                                pb: "2rem",
-                            }}
-                        >
-                            <Typography
-                                sx={{ fontSize: "1.6rem", fontWeight: "500" }}
-                            >
-                                Published:
-                            </Typography>
-                            <Typography sx={{ fontSize: "1.6rem", ml: "1rem" }}>
-                                {moment(createdAt).format("dddd, MMM Do YYYY")}
-                            </Typography>
+                            <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Take Profit 1:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {takeProfit1}
+                                </Typography>
+                            </Flex>
+                            {takeProfit2 && (
+                                <Flex
+                                    sx={{
+                                        alignItems: "center",
+                                        p: "1rem 2rem",
+                                        pb: "2rem",
+                                    }}
+                                >
+                                    <Typography
+                                        sx={{
+                                            fontSize: "1.6rem",
+                                            fontWeight: "500",
+                                        }}
+                                    >
+                                        Take Profit 2:
+                                    </Typography>
+                                    <Typography
+                                        sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                    >
+                                        {takeProfit2}
+                                    </Typography>
+                                </Flex>
+                            )}
+
+                            {/* <Divider /> */}
                         </Flex>
-                        {/* <Divider /> */}
+                        <Flex sx={{ flexDirection: "column" }}>
+                            <Flex
+                                sx={{
+                                    alignItems: "center",
+                                    p: "1rem 2rem",
+                                    pt: "2rem",
+                                }}
+                            >
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Published:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {moment(createdAt).format(
+                                        "dddd, MMM Do YYYY"
+                                    )}
+                                </Typography>
+                            </Flex>
+                            <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Risk Level:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {risk}
+                                </Typography>
+                            </Flex>
+                            <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Risk to Reward:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {Number(riskReward)?.toFixed(2)}
+                                </Typography>
+                            </Flex>
+                        </Flex>
                     </Flex>
                     {/* here would go the liking, commenting, and sharing buttons */}
                 </Flex>

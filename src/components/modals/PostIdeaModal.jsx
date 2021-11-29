@@ -22,6 +22,7 @@ import { useAuth } from "../../context/authCtx";
 import { db } from "../../firebase/firebase";
 import { useAsyncEffect } from "../../hooks/use-async-effect";
 import CustomModal from "./CustomModal";
+import { calculateForexIdea } from "utils/calculateForex";
 
 export default function PostIdeaModal({ open, onClose }) {
     const { getUserData, userData, currentUser } = useAuth();
@@ -30,6 +31,7 @@ export default function PostIdeaModal({ open, onClose }) {
     const [progress, setProgress] = useState(null);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
+    const [calculatedValues, setCalculatedValues] = useState({});
     const [values, setValues] = useState({});
     const [imageUrl, setImageUrl] = useState("");
 
@@ -43,6 +45,7 @@ export default function PostIdeaModal({ open, onClose }) {
             await setDoc(doc(collection(db, "ideas")), {
                 trader: currentUser.uid,
                 ...values,
+                ...calculatedValues,
                 createdAt: Date.now(),
                 imageUrl,
             })
@@ -83,6 +86,7 @@ export default function PostIdeaModal({ open, onClose }) {
             }, 2000);
             return;
         }
+        await setCalculatedValues(calculateForexIdea(vals));
         await setValues(vals);
         if (ideaImage.name) {
             await uploadImage(
@@ -98,6 +102,7 @@ export default function PostIdeaModal({ open, onClose }) {
             await setDoc(doc(collection(db, "ideas")), {
                 trader: currentUser.uid,
                 ...vals,
+                ...calculatedValues,
                 createdAt: Date.now(),
                 imageUrl,
             })
