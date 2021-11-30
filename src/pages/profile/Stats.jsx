@@ -70,7 +70,7 @@ const Stats = ({ RightComponent, isProfile, otherUser }) => {
                                     sx={{
                                         fontSize: "2.4rem",
                                         fontWeight: "600",
-                                        color: "#0cb577",
+                                        color: "#0DC24A",
                                     }}
                                 >
                                     $1272.43
@@ -102,7 +102,7 @@ const Stats = ({ RightComponent, isProfile, otherUser }) => {
                                     sx={{
                                         fontSize: "2.4rem",
                                         fontWeight: "600",
-                                        color: "#a91832",
+                                        color: "#CD1010",
                                     }}
                                 >
                                     $736.12

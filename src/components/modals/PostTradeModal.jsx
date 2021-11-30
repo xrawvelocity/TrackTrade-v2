@@ -279,7 +279,7 @@ export default function PostTradeModal({ open, onClose }) {
                                                         setTradeImage({})
                                                     }
                                                     sx={{
-                                                        color: "#a91832",
+                                                        color: "#CD1010",
                                                         ml: "1rem",
                                                         mb: "2px",
                                                     }}

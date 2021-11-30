@@ -1628,7 +1628,7 @@ main {
     text-decoration: none;
     padding: 1rem 2rem;
     color: #eee;
-    background-color: #a91832;
+    background-color: #CD1010;
     border-radius: 3px;
     border: none;
     transition: all 0.2s ease-in-out;
@@ -2043,7 +2043,7 @@ main {
     text-decoration: none;
     padding: 1rem 2rem;
     color: #eee;
-    background-color: #a91832;
+    background-color: #CD1010;
     border-radius: 3px;
     border: none;
     transition: all 0.2s ease-in-out;
@@ -2203,7 +2203,7 @@ main {
     font-size: 2rem;
     font-weight: 700;
     transition: all 0.2s ease-in-out;
-    color: #0cb577;
+    color: #0dc24a;
 }
 .trade-ideas-card-loss-all {
     display: block;
@@ -2220,7 +2220,7 @@ main {
     font-size: 2rem;
     font-weight: 700;
     transition: all 0.2s ease-in-out;
-    color: #0cb577;
+    color: #0dc24a;
 }
 .trade-ideas-card-loss-popup {
     display: block;
@@ -2237,7 +2237,7 @@ main {
     font-size: 2rem;
     font-weight: 700;
     transition: all 0.2s ease-in-out;
-    color: #0cb577;
+    color: #0dc24a;
 }
 .trade-ideas-card-loss {
     display: block;

@@ -10,8 +10,8 @@ import {
 
 const CustomPie = ({
     data = [
-        { name: "Wins", value: 70, color: "#0cb577" },
-        { name: "Losses", value: 30, color: "#a91832" },
+        { name: "Wins", value: 70, color: "#0DC24A" },
+        { name: "Losses", value: 30, color: "#CD1010" },
     ],
     colors,
     legendProps = {

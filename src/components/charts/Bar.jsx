@@ -30,9 +30,9 @@ const CustomBar = () => {
         let fill;
 
         if (amount > 0) {
-            fill = "#0cb577";
+            fill = "#0DC24A";
         } else {
-            fill = "#a91832";
+            fill = "#CD1010";
         }
 
         return <Rectangle {...props} fill={fill} />;

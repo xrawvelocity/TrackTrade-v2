@@ -1,4 +1,4 @@
 export const COLORS = {
-    green: "#0cb577",
-    red: "#a91832",
+    green: "#0DC24A",
+    red: "#CD1010",
 };

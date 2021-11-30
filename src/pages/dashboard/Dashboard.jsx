@@ -165,7 +165,7 @@ const Dashboard = (props) => {
                                         fontSize: "2.4rem",
                                         fontWeight: "600",
                                         marginTop: "1rem",
-                                        color: "#0cb577",
+                                        color: "#0DC24A",
                                     }}
                                 >
                                     $1024.41

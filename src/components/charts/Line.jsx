@@ -58,12 +58,12 @@ const CustomLine = () => {
                     <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
                         <stop
                             offset={off}
-                            stopColor="#0cb577"
+                            stopColor="#0DC24A"
                             stopOpacity={5}
                         />
                         <stop
                             offset={off}
-                            stopColor="#a91832"
+                            stopColor="#CD1010"
                             stopOpacity={5}
                         />
                     </linearGradient>
