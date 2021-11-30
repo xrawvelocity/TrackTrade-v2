@@ -6,7 +6,7 @@ export const calculateWinLoss = (trades) => {
         }
     });
     if (wins) {
-        return (wins / trades.length) * 100;
+        return Number((wins / trades.length) * 100).toFixed(2);
     } else return wins;
 };
 

@@ -29,7 +29,7 @@ const Trades = ({ RightComponent, isProfile, otherUser }) => {
                 <Grid container spacing={3}>
                     {trades.map((each) => {
                         return (
-                            <Grid item xs={2}>
+                            <Grid item xs={4}>
                                 <TradeCard trade={each} />
                             </Grid>
                         );

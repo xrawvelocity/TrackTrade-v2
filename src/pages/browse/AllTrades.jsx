@@ -26,7 +26,7 @@ const AllTrades = () => {
                 <Grid container spacing={3}>
                     {trades.map((each) => {
                         return (
-                            <Grid item xs={2.5}>
+                            <Grid item xs={4}>
                                 <TradeCard trade={each} />
                             </Grid>
                         );

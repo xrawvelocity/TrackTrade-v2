@@ -63,7 +63,5 @@ export const calculateForexIdea = (trade) => {
 
     riskReward = profit / loss;
 
-    console.log(riskReward);
-
     return { riskReward };
 };

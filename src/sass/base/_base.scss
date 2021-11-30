@@ -38,6 +38,11 @@ a,
 a:link,
 a:visited {
     text-decoration: none;
+    color: #000000de;
+}
+
+a:hover {
+    color: #1985d8;
 }
 
 body::-webkit-scrollbar-track {

@@ -14,7 +14,7 @@ import FormInput from "components/inputs/FormInput";
 import SelectInput from "components/inputs/SelectInput";
 import MainButton from "components/buttons/MainButton";
 import { SYMBOLS } from "enums/symbols";
-import { uploadImage } from "firebase/methods";
+import { postTrade, uploadImage } from "firebase/methods";
 import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
 import { calculateForex, calculateForexTrade } from "utils/calculateForex";
@@ -37,31 +37,23 @@ export default function PostTradeModal({ open, onClose }) {
 
     useAsyncEffect(async () => {
         await getUserData();
-        console.log(userData);
     }, []);
 
     useAsyncEffect(async () => {
         if (imageUrl) {
-            await setDoc(doc(collection(db, "trades")), {
-                trader: currentUser.uid,
-                createdAt: Date.now(),
-                imageUrl,
-                ...values,
-                ...calculatedValues,
-            })
-                .then(() => {
-                    setSuccess(true);
-                    setTimeout(() => {
-                        handleClose();
-                    }, 2000);
-                })
-                .catch((err) => {
-                    setError("There was an error, please try again");
-                    setProgress(null);
-                    setTimeout(() => {
-                        setError("");
-                    }, 2000);
-                });
+            postTrade(
+                {
+                    trader: currentUser.uid,
+                    createdAt: Date.now(),
+                    imageUrl,
+                    ...values,
+                    ...calculatedValues,
+                },
+                setSuccess,
+                handleClose,
+                setError,
+                setProgress
+            );
         }
     }, [imageUrl]);
 
@@ -97,29 +89,21 @@ export default function PostTradeModal({ open, onClose }) {
                 setProgress,
                 setImageUrl
             );
-            console.log("1", imageUrl);
         }
         if (!tradeImage) {
-            await setDoc(doc(collection(db, "trades")), {
-                trader: currentUser.uid,
-                createdAt: Date.now(),
-                imageUrl,
-                ...vals,
-                ...calculatedValues,
-            })
-                .then(() => {
-                    setSuccess(true);
-                    setTimeout(() => {
-                        handleClose();
-                    }, 2000);
-                })
-                .catch((err) => {
-                    setError("There was an error, please try again");
-                    setProgress(null);
-                    setTimeout(() => {
-                        setError("");
-                    }, 2000);
-                });
+            postTrade(
+                {
+                    trader: currentUser.uid,
+                    createdAt: Date.now(),
+                    imageUrl,
+                    ...vals,
+                    ...calculatedValues,
+                },
+                setSuccess,
+                handleClose,
+                setError,
+                setProgress
+            );
         }
     };
 
@@ -325,7 +309,10 @@ export default function PostTradeModal({ open, onClose }) {
                                 <MainButton
                                     variant="contained"
                                     color="primary"
-                                    loading={progress && progress !== 100}
+                                    loading={
+                                        (progress && progress !== 100) ||
+                                        success
+                                    }
                                     onClick={() => form.submit()}
                                 >
                                     Post Trade

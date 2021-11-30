@@ -26,7 +26,6 @@ import { calculateWinLoss } from "utils/tradeStats";
 
 const AllTraders = () => {
     const [traders, setTraders] = useState([]);
-    const [gridRows, setGridRows] = useState([]);
     const [loading, setLoading] = useState(true);
     const [connectLoading, setConnectLoading] = useState("");
     const { currentUser, getUserData, userData } = useAuth();
@@ -43,11 +42,8 @@ const AllTraders = () => {
 
     useAsyncEffect(async () => {
         const res = await getAllTraders();
-        console.log(res);
         await setTraders(res);
         await getUserData();
-        let rows = getRows();
-        console.log(rows);
         setLoading(false);
     }, []);
 
@@ -64,30 +60,6 @@ const AllTraders = () => {
         await getUserData();
         setConnectLoading("");
     };
-
-    const getStats = async (id) => {
-        let trades = await getUserTrades(id);
-
-        return {
-            winLoss: calculateWinLoss(trades),
-            totalTrades: trades.length,
-        };
-    };
-
-    const getRows = () => {
-        return traders.map((each, index) => {
-            let { winLoss, totalTrades } = getStats(each.uid);
-
-            return {
-                ...each,
-                id: index,
-                winLoss,
-                totalTrades,
-            };
-        });
-    };
-
-    console.log(getRows());
 
     const columns = [
         {
@@ -138,7 +110,6 @@ const AllTraders = () => {
             sortable: false,
             disableColumnMenu: true,
             renderCell: ({ row, value }) => {
-                console.log(row);
                 if (row.uid !== currentUser.uid) {
                     return (
                         <Flex
@@ -218,7 +189,8 @@ const AllTraders = () => {
                         className={classes.dataGrid}
                         disableSelectionOnClick
                         columns={columns}
-                        rows={gridRows}
+                        getRowId={(row) => row.uid}
+                        rows={traders}
                     />
                 </Paper>
             )}

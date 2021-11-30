@@ -41,7 +41,6 @@ export default function PostIdeaModal({ open, onClose }) {
 
     useAsyncEffect(async () => {
         if (imageUrl) {
-            console.log("3", "pls wrk");
             await setDoc(doc(collection(db, "ideas")), {
                 trader: currentUser.uid,
                 ...values,
@@ -95,10 +94,8 @@ export default function PostIdeaModal({ open, onClose }) {
                 setProgress,
                 setImageUrl
             );
-            console.log("1", imageUrl);
         }
         if (!ideaImage.name) {
-            console.log("2", "no image");
             await setDoc(doc(collection(db, "ideas")), {
                 trader: currentUser.uid,
                 ...vals,
@@ -360,7 +357,10 @@ export default function PostIdeaModal({ open, onClose }) {
                                 <MainButton
                                     variant="contained"
                                     color="primary"
-                                    loading={progress && progress !== 100}
+                                    loading={
+                                        (progress && progress !== 100) ||
+                                        success
+                                    }
                                     onClick={() => form.submit()}
                                 >
                                     Post Trade Idea

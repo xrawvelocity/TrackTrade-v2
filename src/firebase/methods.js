@@ -8,6 +8,8 @@ import {
     where,
     arrayUnion,
     arrayRemove,
+    increment,
+    setDoc,
 } from "@firebase/firestore";
 import {
     getDownloadURL,
@@ -16,6 +18,7 @@ import {
     deleteObject,
     listAll,
 } from "@firebase/storage";
+import { calculateWinLoss } from "utils/tradeStats";
 import { db, storage } from "./firebase";
 
 export const getTraderById = async (id) => {
@@ -28,7 +31,6 @@ export const getTraderById = async (id) => {
 };
 
 export const updateAvatar = async (id, imageUrl = "", previous) => {
-    console.log(previous);
     try {
         if (previous) {
             let storageRef = ref(storage, `files/${id}/avatar`);
@@ -36,9 +38,8 @@ export const updateAvatar = async (id, imageUrl = "", previous) => {
             await listAll(storageRef).then(
                 (res) => (previousAvatar = res.items[0]._location.path_)
             );
-            console.log(previousAvatar);
             await deleteObject(ref(storage, previousAvatar))
-                .then(() => console.log("deleted"))
+                .then(() => console.log("deleted previous avatar"))
                 .catch((err) => console.log(err));
         }
         await updateDoc(doc(db, "users", id), { avatar: imageUrl });
@@ -116,9 +117,7 @@ export const uploadImage = (file, path, setProgress, setImageUrl) => {
         async () => {
             await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                 setImageUrl(url);
-                console.log("111", url);
             });
-            console.log("111", "done");
             setProgress(100);
         }
     );
@@ -145,7 +144,6 @@ export const removeConnection = async (id, otherId) => {
 };
 
 export const getAllConnections = async (connections) => {
-    console.log(connections);
     let all = [];
     if (connections.length) {
         const q = await query(
@@ -158,4 +156,32 @@ export const getAllConnections = async (connections) => {
         });
     }
     return all;
+};
+
+export const postTrade = async (
+    values,
+    setSuccess,
+    handleClose,
+    setError,
+    setProgress
+) => {
+    try {
+        await setDoc(doc(collection(db, "trades")), values);
+        let trades = await getUserTrades(values.trader);
+        await updateDoc(doc(db, "users", values.trader), {
+            totalTrades: trades.length,
+            winLoss: calculateWinLoss(trades),
+        });
+
+        setSuccess(true);
+        setTimeout(() => {
+            handleClose();
+        }, 2000);
+    } catch (err) {
+        setError("There was an error, please try again");
+        setProgress(null);
+        setTimeout(() => {
+            setError("");
+        }, 2000);
+    }
 };

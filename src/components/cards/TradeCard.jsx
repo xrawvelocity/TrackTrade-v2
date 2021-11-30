@@ -1,207 +1,290 @@
-import { Paper } from "@mui/material";
+import { Divider, Paper, Typography } from "@mui/material";
+import UserAvatar from "components/partials/UserAvatar";
+import { useAuth } from "context/authCtx";
+import { COLORS } from "enums/colors";
 import { getTraderById } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
+import moment from "moment";
 import React, { useState } from "react";
+import { useLocation, useParams } from "react-router";
 import { Link } from "react-router-dom";
-import {
-    FacebookIcon,
-    FacebookShareButton,
-    TelegramIcon,
-    TelegramShareButton,
-    TwitterIcon,
-    TwitterShareButton,
-    WhatsappIcon,
-    WhatsappShareButton,
-} from "react-share";
-import { formatTime } from "utils/formatTime";
 
-import CustomModal from "../modals/CustomModal";
+import Flex from "../partials/Flex";
 
 const TradeCard = ({ trade, ...props }) => {
-    const [modalOpen, setModalOpen] = useState(false);
+    const {
+        type,
+        currency,
+        entry,
+        close,
+        description,
+        imageUrl,
+        trader,
+        createdAt,
+        lot,
+        money,
+        pips,
+        win,
+    } = trade;
     const [user, setUser] = useState({});
+    const { userData } = useAuth();
+
+    const params = useParams();
+
+    const location = useLocation();
+
+    const isProfile = location.pathname.includes("profile");
 
     useAsyncEffect(async () => {
-        let res = await getTraderById(trade.trader);
-        await setUser(res);
-    }, []);
+        let res = await getTraderById(trader);
+        if (params.userId === userData.uid) {
+            await setUser(userData);
+        } else {
+            await setUser(res);
+        }
+    }, [trade]);
 
     return (
         <>
-            <Paper className="trade-ideas-card">
-                <div
-                    onClick={() => {
-                        setModalOpen(true);
-                    }}
-                    className="trade-ideas-card-more"
-                >
-                    click for more info
-                </div>
-                <div
-                    onClick={() => {
-                        setModalOpen(true);
-                    }}
-                    className="trade-ideas-card-link"
-                >
-                    {/* {trade.money > 0 ? (
-                        <div className="trade-ideas-card-win-all">WIN</div>
-                    ) : (
-                        <div className="trade-ideas-card-loss-all">LOSS</div>
-                    )} */}
+            <Paper elevation={4}>
+                <Flex sx={{ flexDirection: "column" }}>
+                    <div>
+                        <Flex
+                            sx={{
+                                p: "2rem",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <Flex sx={{ alignItems: "center" }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: "2.2rem",
+                                        fontWeight: "700",
 
-                    <div className="trade-ideas-card__item">
-                        <div className="trade-ideas-card__item-title">
-                            {trade.currency}
-                        </div>
+                                        color:
+                                            type === "sell"
+                                                ? "#c21"
+                                                : COLORS.green,
+                                    }}
+                                >
+                                    {type.toUpperCase()}
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        fontSize: "2rem",
+                                        fontWeight: "500",
+                                        ml: "2rem",
+                                    }}
+                                >
+                                    {currency}
+                                </Typography>
+                            </Flex>
+                            {isProfile ? null : (
+                                <Flex
+                                    sx={{
+                                        alignItems: "center",
+                                        cursor: "pointer",
+                                        color: "#000",
+                                        "&:hover": {
+                                            "& > p": {
+                                                color: "#1985d8",
+                                            },
+                                        },
+                                    }}
+                                    component={Link}
+                                    to={`/profile/${user.uid}/trades`}
+                                >
+                                    <Typography
+                                        sx={{
+                                            fontSize: "2rem",
+                                            fontWeight: "500",
+                                            mr: "2rem",
+                                        }}
+                                    >
+                                        {user.username}
+                                    </Typography>
+                                    <UserAvatar
+                                        imageUrl={user.avatar}
+                                        style={{
+                                            width: "50px",
+                                            height: "50px",
+                                            zIndex: "20",
+                                        }}
+                                    />
+                                </Flex>
+                            )}
+                        </Flex>
+                        <Divider />
                     </div>
-                    <div className="trade-ideas-card__item">
-                        <div className="trade-ideas-card__item-title">
-                            Entry:
-                        </div>
-                        <div className="trade-ideas-card__item-content">
-                            {trade.entry}
-                        </div>
-                    </div>
-                    <div className="trade-ideas-card__item">
-                        <div className="trade-ideas-card__item-title">
-                            Close:
-                        </div>
-                        <div className="trade-ideas-card__item-content">
-                            {trade.close}
-                        </div>
-                    </div>
-                    <div className="trade-ideas-card__item">
-                        <div className="trade-ideas-card__item-title">By:</div>
-                        <div className="trade-ideas-card__item-content">
-                            {user.username}
-                        </div>
-                    </div>
-                    <div className="trade-ideas-card__item-date">
-                        <div className="trade-ideas-card__item-date-title">
-                            Created at:
-                        </div>
-                        <div className="trade-ideas-card__item-date-content">
-                            {formatTime(trade.createdAt)}
-                        </div>
-                    </div>
-                </div>
-            </Paper>
-            <CustomModal open={modalOpen} onClose={() => setModalOpen(false)}>
-                <div class="popup">
-                    <div class="popup__content" id="content">
-                        {trade.imageUrl ? (
+                    {imageUrl && (
+                        <Flex sx={{ height: "250px", width: "100%" }}>
                             <img
-                                className="popup__left"
-                                src={trade.imageUrl}
-                                alt="Trade image"
+                                src={imageUrl}
+                                alt="Trade Idea Image"
+                                style={{ objectFit: "cover", width: "100%" }}
                             />
-                        ) : null}
-                        <div class="popup__right">
-                            <div
-                                onClick={() => setModalOpen(false)}
-                                class="popup__close"
+                            <Divider />
+                        </Flex>
+                    )}
+                    <Flex>
+                        <Flex sx={{ flexDirection: "column" }}>
+                            <Flex
+                                sx={{
+                                    alignItems: "center",
+                                    p: "2rem",
+                                    pb: ".5rem",
+                                }}
                             >
-                                &times;
-                            </div>
-
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                {trade.currency}
-                            </h2>
-
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                Entry: {trade.entry}
-                            </h2>
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                Stoploss: {}
-                            </h2>
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                Takeprofit: {}
-                            </h2>
-
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                {trade.description ? (
-                                    <p class="popup__text">
-                                        {trade.description}
-                                    </p>
-                                ) : (
-                                    <p class="popup__text">
-                                        No description provided
-                                    </p>
-                                )}
-                            </h2>
-                            <p class="popup__text">
-                                Created by:
-                                <Link to={`/profile/${trade.trader}`}>
-                                    {user.username}
-                                </Link>
-                            </p>
-
-                            <div className="popup_right-sharing-icons">
-                                <FacebookShareButton
-                                    url={`https://www.tracktrade.co/profile/${user.username}`}
-                                    title={`${user.username}'s TRADE IDEA:\n${
-                                        trade.currency
-                                    } \nEntry: ${
-                                        trade.entry
-                                    }\nStoploss: \nTakeprofit: \n${
-                                        trade.description
-                                            ? `Description: ${trade.description}\n`
-                                            : ""
-                                    }`}
-                                    className="popup_right-sharing-icons-button"
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
                                 >
-                                    <FacebookIcon size={32} round />
-                                </FacebookShareButton>
-                                <TwitterShareButton
-                                    url={`https://www.tracktrade.co/profile/${user.username}`}
-                                    title={`${user.username}'s TRADE IDEA:\n${
-                                        trade.currency
-                                    } \nEntry: ${
-                                        trade.entry
-                                    }\nStoploss: \nTakeprofit: \n${
-                                        trade.description
-                                            ? `Description: ${trade.description}\n`
-                                            : ""
-                                    }`}
-                                    className="popup_right-sharing-icons-button"
+                                    Entry:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
                                 >
-                                    <TwitterIcon size={32} round />
-                                </TwitterShareButton>
-                                <TelegramShareButton
-                                    url={`https://www.tracktrade.co/profile/${user.username}`}
-                                    title={`${user.username}'s TRADE IDEA:\n${
-                                        trade.currency
-                                    } \nEntry: ${
-                                        trade.entry
-                                    }\nStoploss: \nTakeprofit: \n${
-                                        trade.description
-                                            ? `Description: ${trade.description}\n`
-                                            : ""
-                                    }`}
-                                    className="popup_right-sharing-icons-button"
+                                    {entry}
+                                </Typography>
+                            </Flex>
+                            <Flex
+                                sx={{ alignItems: "center", p: ".5rem 2rem" }}
+                            >
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
                                 >
-                                    <TelegramIcon size={32} round />
-                                </TelegramShareButton>
-                                <WhatsappShareButton
-                                    url={`https://www.tracktrade.co/profile/${user.username}`}
-                                    title={`${user.username}'s TRADE IDEA:\n${
-                                        trade.currency
-                                    } \nEntry: ${
-                                        trade.entry
-                                    }\nStoploss: \nTakeprofit: \n${
-                                        trade.description
-                                            ? `Description: ${trade.description}\n`
-                                            : ""
-                                    }`}
-                                    className="popup_right-sharing-icons-button"
+                                    Close:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
                                 >
-                                    <WhatsappIcon size={32} round />
-                                </WhatsappShareButton>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </CustomModal>
+                                    {close}
+                                </Typography>
+                            </Flex>
+                            <Flex
+                                sx={{
+                                    alignItems: "center",
+                                    p: ".5rem 2rem",
+                                }}
+                            >
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Lot Size:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {lot}
+                                </Typography>
+                            </Flex>
+
+                            {/* <Divider /> */}
+                        </Flex>
+                        <Flex sx={{ flexDirection: "column" }}>
+                            <Flex
+                                sx={{
+                                    alignItems: "center",
+                                    p: ".5rem 2rem",
+                                    pt: "2rem",
+                                }}
+                            >
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Published:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {moment(createdAt).format(
+                                        "dddd, MMM Do YYYY"
+                                    )}
+                                </Typography>
+                            </Flex>
+                            <Flex
+                                sx={{
+                                    alignItems: "center",
+                                    p: ".5rem 2rem",
+                                }}
+                            >
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Pips:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {Math.abs(pips)}
+                                </Typography>
+                            </Flex>
+                            <Flex
+                                sx={{
+                                    alignItems: "center",
+                                    p: ".5rem 2rem 2rem",
+                                }}
+                            >
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    {money > 0 ? "Profit:" : "Loss:"}
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    ${Math.abs(money).toFixed(2)}
+                                </Typography>
+                            </Flex>
+
+                            {false && (
+                                <Flex
+                                    sx={{
+                                        flexDirection: "column",
+                                        p: ".5rem 2rem",
+                                    }}
+                                >
+                                    <Typography
+                                        sx={{
+                                            fontSize: "1.6rem",
+                                            fontWeight: "500",
+                                        }}
+                                    >
+                                        Description:
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            fontSize: "1.6rem",
+                                            maxWidth: "250px",
+                                        }}
+                                    >
+                                        {description}
+                                    </Typography>
+                                </Flex>
+                            )}
+                        </Flex>
+                    </Flex>
+                    {/* here would go the liking, commenting, and sharing buttons */}
+                </Flex>
+            </Paper>
         </>
     );
 };

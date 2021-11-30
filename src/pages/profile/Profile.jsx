@@ -54,7 +54,7 @@ const Profile = () => {
             await updateAvatar(currentUser.uid, imageUrl, userData?.avatar);
             getUserData();
         }
-    }, [progress]);
+    }, [progress, imageUrl]);
 
     const subSideBarObj = isProfile
         ? [

@@ -39,6 +39,8 @@ const AuthProvider = ({ children }) => {
                 connections: [],
                 uid: user.user.uid,
                 createdAt: Date.now(),
+                winLoss: 0,
+                totalTrades: 0,
             });
         } catch (err) {
             console.log(err);

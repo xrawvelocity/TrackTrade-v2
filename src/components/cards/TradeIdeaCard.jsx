@@ -1,29 +1,17 @@
 import { Divider, Paper, Typography } from "@mui/material";
+import UserAvatar from "components/partials/UserAvatar";
+import { useAuth } from "context/authCtx";
+import { COLORS } from "enums/colors";
 import { getTraderById } from "firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
+import moment from "moment";
 import React, { useState } from "react";
+import { useLocation, useParams } from "react-router";
 import { Link } from "react-router-dom";
-import {
-    FacebookIcon,
-    FacebookShareButton,
-    TelegramIcon,
-    TelegramShareButton,
-    TwitterIcon,
-    TwitterShareButton,
-    WhatsappIcon,
-    WhatsappShareButton,
-} from "react-share";
-import { formatTime } from "utils/formatTime";
-import { tradeKind } from "utils/tradeKind";
 
 import Flex from "../partials/Flex";
-import CustomModal from "../modals/CustomModal";
-import { COLORS } from "enums/colors";
-import moment from "moment";
-import UserAvatar from "components/partials/UserAvatar";
 
 const TradeIdeaCard = ({ tradeIdea, ...props }) => {
-    console.log(tradeIdea);
     const {
         type,
         currency,
@@ -38,24 +26,24 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
         createdAt,
         riskReward,
     } = tradeIdea;
-    const [modalOpen, setModalOpen] = useState(false);
-    const [edit, setEdit] = useState();
-    const [isProfile, setIsProfile] = useState(false);
     const [user, setUser] = useState({});
+    const { userData } = useAuth();
+
+    const params = useParams();
+
+    const location = useLocation();
+
+    const isProfile = location.pathname.includes("profile");
 
     useAsyncEffect(async () => {
         let res = await getTraderById(tradeIdea.trader);
-        await setUser(res);
+        if (params.userId === userData.uid) {
+            await setUser(userData);
+        } else {
+            await setUser(res);
+        }
     }, [tradeIdea]);
 
-    // setIsProfile(props.checkLogin?.data?.username === tradeIdea.trader);
-    const deleteCard = async (id) => {
-        try {
-            // delete goes here
-        } catch (err) {
-            console.log("--=-=-=-=-=-=-=", err);
-        }
-    };
     return (
         <>
             <Paper elevation={4}>
@@ -92,25 +80,40 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                     {currency}
                                 </Typography>
                             </Flex>
-                            <Flex sx={{ alignItems: "center" }}>
-                                <Typography
+                            {isProfile ? null : (
+                                <Flex
                                     sx={{
-                                        fontSize: "2rem",
-                                        fontWeight: "500",
-                                        mr: "2rem",
+                                        alignItems: "center",
+                                        cursor: "pointer",
+                                        color: "#000",
+                                        "&:hover": {
+                                            "& > p": {
+                                                color: "#1985d8",
+                                            },
+                                        },
                                     }}
+                                    component={Link}
+                                    to={`/profile/${user.uid}/ideas`}
                                 >
-                                    {user.username}
-                                </Typography>
-                                <UserAvatar
-                                    imageUrl={user.avatar}
-                                    style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        zIndex: "20",
-                                    }}
-                                />
-                            </Flex>
+                                    <Typography
+                                        sx={{
+                                            fontSize: "2rem",
+                                            fontWeight: "500",
+                                            mr: "2rem",
+                                        }}
+                                    >
+                                        {user.username}
+                                    </Typography>
+                                    <UserAvatar
+                                        imageUrl={user.avatar}
+                                        style={{
+                                            width: "50px",
+                                            height: "50px",
+                                            zIndex: "20",
+                                        }}
+                                    />
+                                </Flex>
+                            )}
                         </Flex>
                         <Divider />
                     </div>
@@ -130,7 +133,7 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                 sx={{
                                     alignItems: "center",
                                     p: "2rem",
-                                    pb: "1rem",
+                                    pb: ".5rem",
                                 }}
                             >
                                 <Typography
@@ -147,7 +150,9 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                     {entry}
                                 </Typography>
                             </Flex>
-                            <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
+                            <Flex
+                                sx={{ alignItems: "center", p: ".5rem 2rem" }}
+                            >
                                 <Typography
                                     sx={{
                                         fontSize: "1.6rem",
@@ -162,7 +167,9 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                     {stopLoss}
                                 </Typography>
                             </Flex>
-                            <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
+                            <Flex
+                                sx={{ alignItems: "center", p: ".5rem 2rem" }}
+                            >
                                 <Typography
                                     sx={{
                                         fontSize: "1.6rem",
@@ -181,8 +188,7 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                 <Flex
                                     sx={{
                                         alignItems: "center",
-                                        p: "1rem 2rem",
-                                        pb: "2rem",
+                                        p: ".5rem 2rem 2rem",
                                     }}
                                 >
                                     <Typography
@@ -207,7 +213,7 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                             <Flex
                                 sx={{
                                     alignItems: "center",
-                                    p: "1rem 2rem",
+                                    p: ".5rem 2rem",
                                     pt: "2rem",
                                 }}
                             >
@@ -227,22 +233,10 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                     )}
                                 </Typography>
                             </Flex>
-                            <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
-                                <Typography
-                                    sx={{
-                                        fontSize: "1.6rem",
-                                        fontWeight: "500",
-                                    }}
-                                >
-                                    Risk Level:
-                                </Typography>
-                                <Typography
-                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
-                                >
-                                    {risk}
-                                </Typography>
-                            </Flex>
-                            <Flex sx={{ alignItems: "center", p: "1rem 2rem" }}>
+
+                            <Flex
+                                sx={{ alignItems: "center", p: ".5rem 2rem" }}
+                            >
                                 <Typography
                                     sx={{
                                         fontSize: "1.6rem",
@@ -257,157 +251,57 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                     {Number(riskReward)?.toFixed(2)}
                                 </Typography>
                             </Flex>
+                            <Flex
+                                sx={{
+                                    alignItems: "center",
+                                    p: ".5rem 2rem",
+                                    pb: "2rem",
+                                }}
+                            >
+                                <Typography
+                                    sx={{
+                                        fontSize: "1.6rem",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    Risk Level:
+                                </Typography>
+                                <Typography
+                                    sx={{ fontSize: "1.6rem", ml: "1rem" }}
+                                >
+                                    {risk[0].toUpperCase() + risk.substring(1)}
+                                </Typography>
+                            </Flex>
+                            {false && (
+                                <Flex
+                                    sx={{
+                                        flexDirection: "column",
+                                        p: ".5rem 2rem",
+                                    }}
+                                >
+                                    <Typography
+                                        sx={{
+                                            fontSize: "1.6rem",
+                                            fontWeight: "500",
+                                        }}
+                                    >
+                                        Description:
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            fontSize: "1.6rem",
+                                            maxWidth: "250px",
+                                        }}
+                                    >
+                                        {description}
+                                    </Typography>
+                                </Flex>
+                            )}
                         </Flex>
                     </Flex>
                     {/* here would go the liking, commenting, and sharing buttons */}
                 </Flex>
             </Paper>
-            <CustomModal open={modalOpen} onClose={() => setModalOpen(false)}>
-                <div class="popup">
-                    <div class="popup__content" id="content">
-                        {tradeIdea.imageUrl ? (
-                            <img
-                                className="popup__left"
-                                src={tradeIdea.imageUrl}
-                                alt="Trade image"
-                            />
-                        ) : null}
-                        <div class="popup__right">
-                            <div
-                                onClick={() => setModalOpen(false)}
-                                class="popup__close"
-                            >
-                                &times;
-                            </div>
-
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                {tradeIdea.currency} {tradeIdea.kind}
-                            </h2>
-
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                Entry: {tradeIdea.entry}
-                            </h2>
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                Stoploss: {tradeIdea.stopLoss}
-                            </h2>
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                Takeprofit: {tradeIdea.takeProfit}
-                            </h2>
-
-                            <h2 class="heading-secondary u-margin-bottom-small">
-                                {tradeIdea.description ? (
-                                    <p class="popup__text">
-                                        {tradeIdea.description}
-                                    </p>
-                                ) : (
-                                    <p class="popup__text">
-                                        No description provided
-                                    </p>
-                                )}
-                            </h2>
-                            <p class="popup__text">
-                                Created by:
-                                <Link to={`/profile/${tradeIdea.trader}`}>
-                                    {tradeIdea.trader}
-                                </Link>
-                            </p>
-
-                            <div className="popup_right-sharing-icons">
-                                <FacebookShareButton
-                                    url={`https://www.tracktrade.co/profile/${tradeIdea.trader}`}
-                                    title={`${
-                                        tradeIdea.trader
-                                    }'s TRADE IDEA:\n${tradeIdea.currency} ${
-                                        tradeIdea.kind
-                                    }\nEntry: ${tradeIdea.entry}\nStoploss: ${
-                                        tradeIdea.stopLoss
-                                    }\nTakeprofit: ${tradeIdea.takeProfit}\n${
-                                        tradeIdea.description
-                                            ? `Description: ${tradeIdea.description}\n`
-                                            : ""
-                                    }`}
-                                    className="popup_right-sharing-icons-button"
-                                >
-                                    <FacebookIcon size={32} round />
-                                </FacebookShareButton>
-                                <TwitterShareButton
-                                    url={`https://www.tracktrade.co/profile/${tradeIdea.trader}`}
-                                    title={`${
-                                        tradeIdea.trader
-                                    }'s TRADE IDEA:\n${tradeIdea.currency} ${
-                                        tradeIdea.kind
-                                    }\nEntry: ${tradeIdea.entry}\nStoploss: ${
-                                        tradeIdea.stopLoss
-                                    }\nTakeprofit: ${tradeIdea.takeProfit}\n${
-                                        tradeIdea.description
-                                            ? `Description: ${tradeIdea.description}\n`
-                                            : ""
-                                    }`}
-                                    className="popup_right-sharing-icons-button"
-                                >
-                                    <TwitterIcon size={32} round />
-                                </TwitterShareButton>
-                                <TelegramShareButton
-                                    url={`https://www.tracktrade.co/profile/${tradeIdea.trader}`}
-                                    title={`${
-                                        tradeIdea.trader
-                                    }'s TRADE IDEA:\n${tradeIdea.currency} ${
-                                        tradeIdea.kind
-                                    }\nEntry: ${tradeIdea.entry}\nStoploss: ${
-                                        tradeIdea.stopLoss
-                                    }\nTakeprofit: ${tradeIdea.takeProfit}\n${
-                                        tradeIdea.description
-                                            ? `Description: ${tradeIdea.description}\n`
-                                            : ""
-                                    }`}
-                                    className="popup_right-sharing-icons-button"
-                                >
-                                    <TelegramIcon size={32} round />
-                                </TelegramShareButton>
-                                <WhatsappShareButton
-                                    url={`https://www.tracktrade.co/profile/${tradeIdea.trader}`}
-                                    title={`${
-                                        tradeIdea.trader
-                                    }'s TRADE IDEA:\n${tradeIdea.currency} ${
-                                        tradeIdea.kind
-                                    }\nEntry: ${tradeIdea.entry}\nStoploss: ${
-                                        tradeIdea.stopLoss
-                                    }\nTakeprofit: ${tradeIdea.takeProfit}\n${
-                                        tradeIdea.description
-                                            ? `Description: ${tradeIdea.description}\n`
-                                            : ""
-                                    }`}
-                                    className="popup_right-sharing-icons-button"
-                                >
-                                    <WhatsappIcon size={32} round />
-                                </WhatsappShareButton>
-                            </div>
-                            {isProfile ? (
-                                <Flex sx={{ marginTop: "1rem" }}>
-                                    <button
-                                        onClick={() => setEdit(true)}
-                                        className="popup__edit"
-                                    >
-                                        EDIT IDEA
-                                    </button>
-                                    <button
-                                        href="#main"
-                                        onClick={() =>
-                                            deleteCard(
-                                                props.selectedTradeIdea
-                                                    .eachTrade._id
-                                            )
-                                        }
-                                        className="popup__delete"
-                                    >
-                                        DELETE IDEA
-                                    </button>
-                                </Flex>
-                            ) : null}
-                        </div>
-                    </div>
-                </div>
-            </CustomModal>
         </>
     );
 };

@@ -2,6 +2,7 @@ import { CssBaseline } from "@mui/material";
 import ProtectedRoute from "components/partials/ProtectedRoute";
 import Sidebar from "components/partials/Sidebar";
 import Browse from "pages/browse/Browse";
+import Messages from "pages/messages/Messages.jsx";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
@@ -44,6 +45,11 @@ const App = () => {
                 <ProtectedRoute
                     path="/profile/:userId"
                     render={(props) => <Profile {...props} />}
+                ></ProtectedRoute>
+
+                <ProtectedRoute
+                    path="/messages/:chatId"
+                    render={(props) => <Messages {...props} />}
                 ></ProtectedRoute>
 
                 <ProtectedRoute component={NotFound} />
