@@ -1,4 +1,6 @@
 .sidebar {
+    background-color: $tertiary;
+    
     &-link {
         &,
         &:link,
@@ -19,4 +21,9 @@
             }
         }
     }
+}
+
+.sub-sidebar {
+    background-color: $tertiary;
+    border-left: 1px solid $border;
 }

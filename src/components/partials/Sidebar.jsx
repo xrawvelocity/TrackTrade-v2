@@ -5,6 +5,7 @@ import {
     Logout as LogoutIcon,
     Person as PersonIcon,
     Search as SearchIcon,
+    Settings as SettingsIcon,
 } from "@mui/icons-material";
 import { Icon, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
@@ -17,7 +18,7 @@ import Logo from "./Logo";
 const Sidebar = (props) => {
     const history = useHistory();
     const location = useLocation();
-    const { currentUser, logOut } = useAuth();
+    const { loading, currentUser, logOut } = useAuth();
 
     const isDashboard =
         location.pathname === "/" || location.pathname === "/dashboard";
@@ -38,17 +39,11 @@ const Sidebar = (props) => {
         { text: "Browse", path: "/browse/all-ideas", icon: <SearchIcon /> },
     ];
 
-    const bottomSidebarObj = [
-        { text: "Info", path: "/info", icon: <InfoIcon /> },
-        { text: "Logout", path: logOut, icon: <LogoutIcon /> },
-    ];
-
-    if (currentUser?.email) {
+    if (currentUser?.email && !loading) {
         return (
             <nav
+                className="sidebar"
                 style={{
-                    backgroundColor: "#06151b",
-                    borderRight: "2px solid #00000050",
                     height: "100%",
                     position: "fixed",
                     left: "0",
@@ -285,6 +280,82 @@ const Sidebar = (props) => {
                                             }}
                                         >
                                             Info
+                                        </Typography>
+                                    </Flex>
+                                </Link>
+                            )}
+                            {/* Settings */}
+                            {!isDashboard ? (
+                                <Tooltip
+                                    title={"Settings"}
+                                    placement="right"
+                                    arrow
+                                >
+                                    <Link
+                                        className={`${
+                                            location.pathname.includes(
+                                                "/settings"
+                                            )
+                                                ? "sidebar-link_selected"
+                                                : "sidebar-link"
+                                        }`}
+                                        to="/settings"
+                                        style={{
+                                            height: "40px",
+                                            margin: ".5rem 0",
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Icon
+                                            sx={{
+                                                fontSize: "2.4rem !important",
+
+                                                "& > *": {
+                                                    fontSize:
+                                                        "2.4rem !important",
+                                                },
+                                            }}
+                                        >
+                                            <SettingsIcon />
+                                        </Icon>
+                                    </Link>
+                                </Tooltip>
+                            ) : (
+                                <Link
+                                    className={`${
+                                        location.pathname.includes("/settings")
+                                            ? "sidebar-link_selected"
+                                            : "sidebar-link"
+                                    }`}
+                                    to={"/settings"}
+                                >
+                                    <Flex
+                                        sx={{
+                                            alignSelf: "flex-start",
+                                            alignItems: "center",
+                                            height: "40px",
+                                            margin: ".5rem 0",
+                                        }}
+                                    >
+                                        <Icon
+                                            sx={{
+                                                fontSize: "2.4rem !important",
+                                                "& > *": {
+                                                    fontSize:
+                                                        "2.4rem !important",
+                                                },
+                                            }}
+                                        >
+                                            <SettingsIcon />
+                                        </Icon>
+                                        <Typography
+                                            style={{
+                                                paddingLeft: "1rem",
+                                                fontSize: "2rem",
+                                            }}
+                                        >
+                                            Settings
                                         </Typography>
                                     </Flex>
                                 </Link>

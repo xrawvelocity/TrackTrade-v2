@@ -9,6 +9,7 @@ import {
     onAuthStateChanged,
     signOut,
 } from "firebase/auth";
+import { useHistory } from "react-router-dom";
 
 const AuthContext = React.createContext();
 
@@ -24,6 +25,7 @@ const AuthProvider = ({ children }) => {
         connections: [],
     });
     const [loading, setLoading] = useState(true);
+    const history = useHistory();
 
     const signUp = async (email, username, password) => {
         try {
@@ -42,20 +44,23 @@ const AuthProvider = ({ children }) => {
                 winLoss: 0,
                 totalTrades: 0,
             });
+            history.push("/dashboard");
         } catch (err) {
-            console.log(err);
+            throw Error(err.message);
         }
     };
 
     const logIn = async (email, password) => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
+            history.push("/dashboard");
         } catch (err) {
-            console.log(err);
+            throw Error(err.message);
         }
     };
 
     const logOut = async () => {
+        console.log(currentUser);
         await signOut(auth);
     };
 
@@ -72,7 +77,7 @@ const AuthProvider = ({ children }) => {
             setUserData(docSnap.data());
         } else {
             // doc.data() will be undefined in this case
-            console.log("No such document!");
+            console.log("Cant get user data.");
         }
     };
 

@@ -31,7 +31,7 @@ const Search = ({ placeholder, handleSearch, width, style }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            // fill: theme.palette.text.primary,
+            fill: "#ffffffaa",
             "& > *": {
                 width: "1.6rem",
             },

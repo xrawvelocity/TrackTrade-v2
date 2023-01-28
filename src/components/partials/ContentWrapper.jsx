@@ -17,6 +17,7 @@ const ContentWrapper = ({ children, style, contentStyle }) => {
                     padding: `${
                         isDashboard ? "0 10% 0 200px" : "0 10% 0 100px"
                     }`,
+                    margin: "30px 0",
                     width: "100%",
                     transition: "all .1s ease-in",
                     ...contentStyle,

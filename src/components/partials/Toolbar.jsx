@@ -15,7 +15,7 @@ const Toolbar = ({
 }) => {
     const useStyles = makeStyles(() => ({
         container: {
-            backgroundColor: "#fff",
+            backgroundColor: "#131722",
             padding: "1rem 3rem",
             margin: "0 0 3rem -3rem",
             width: "103%",

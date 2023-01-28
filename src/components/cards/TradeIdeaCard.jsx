@@ -64,8 +64,8 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
 
                                         color:
                                             type === "sell"
-                                                ? "#c21"
-                                                : COLORS.green,
+                                                ? "#e74c3c"
+                                                : "#1abc9c",
                                     }}
                                 >
                                     {type.toUpperCase()}
@@ -85,7 +85,7 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                     sx={{
                                         alignItems: "center",
                                         cursor: "pointer",
-                                        color: "#000",
+
                                         "&:hover": {
                                             "& > p": {
                                                 color: "#1985d8",
@@ -100,6 +100,7 @@ const TradeIdeaCard = ({ tradeIdea, ...props }) => {
                                             fontSize: "2rem",
                                             fontWeight: "500",
                                             mr: "2rem",
+                                            color: "#f3f3f3",
                                         }}
                                     >
                                         {user.username}

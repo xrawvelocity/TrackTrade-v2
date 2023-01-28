@@ -1,8 +1,8 @@
 .home {
     min-height: 80vh;
     max-height: 100%;
-    background-color: $color-blue-dark-3;
-    border-top: 2px solid $color-blue-dark-2;
+    background-color: $blue-dark-3;
+    border-top: 2px solid $blue-dark-2;
     color: #ddd;
     padding: 90px 5% 5rem;
 
@@ -47,7 +47,7 @@
                 }
 
                 &:hover {
-                    background-color: rgba($color-blue-dark-1, 0.7);
+                    background-color: rgba($blue-dark-1, 0.7);
                     color: #ddd;
                     cursor: pointer;
                 }
@@ -55,7 +55,7 @@
             &-text-active {
                 padding: 1rem 1.5rem;
                 margin: auto 8rem;
-                border-bottom: 2px solid $color-blue-bright-1;
+                border-bottom: 2px solid $blue-bright-1;
                 text-align: center;
                 color: #ddd;
                 border-radius: 2px;
@@ -72,7 +72,7 @@
                 }
 
                 &:hover {
-                    background-color: rgba($color-blue-dark-1, 0.7);
+                    background-color: rgba($blue-dark-1, 0.7);
                     color: #ddd;
                     cursor: pointer;
                 }
@@ -103,9 +103,9 @@
         &--search {
             width: 30rem;
             margin: -2rem auto 5rem;
-            background-color: $color-blue-dark-1;
+            background-color: $blue-dark-1;
             color: #ddd;
-            border: 2px solid $color-blue-dark-2;
+            border: 2px solid $blue-dark-2;
             padding: 1rem 1.5rem;
             border-radius: 2px;
             margin: 0 5rem 0 0;
@@ -114,9 +114,9 @@
         &--select {
             width: 20rem;
             margin: -2rem auto 5rem;
-            background-color: $color-blue-dark-1;
+            background-color: $blue-dark-1;
             color: #ddd;
-            border: 2px solid $color-blue-dark-2;
+            border: 2px solid $blue-dark-2;
             padding: 1rem 1.5rem;
             border-radius: 2px;
         }

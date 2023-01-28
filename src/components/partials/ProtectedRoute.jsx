@@ -26,7 +26,7 @@ const ProtectedRoute = ({ path, children, exact, ...props }) => {
         return (
             <Redirect
                 to={{
-                    pathname: "/log-in",
+                    pathname: "/",
                     state: { referrer: location },
                 }}
             />

@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme) => ({
     text: {
         fontSize: "3rem",
         fontWeight: "600",
-        color: "#000",
     },
 }));
 export default function HeaderText({ value, RightComponent }) {

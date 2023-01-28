@@ -1,8 +1,19 @@
-import React, { Component } from "react";
+import { useAuth } from "context/authCtx";
+import React, { Component, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Header from "../../components/partials/Header";
-import Footer from "../../components/partials/Footer";
 
 const Landing = (props) => {
+    const { currentUser } = useAuth();
+    const history = useHistory();
+
+    useEffect(() => {
+        console.log("currentUser", currentUser);
+        if (currentUser?.uid) {
+            history.push("/dashboard");
+        }
+    }, [currentUser]);
+
     return (
         <div className="landing">
             <Header {...props} loggedIn={false} />

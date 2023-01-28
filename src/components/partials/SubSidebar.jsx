@@ -48,11 +48,11 @@ export default function SubSideBar({ obj, loc, header }) {
     return (
         <Slide in={true} out={true} direction="right">
             <Box
+                className="sub-sidebar"
                 sx={{
                     width: "150px",
                     height: "100%",
                     position: "fixed",
-                    backgroundColor: "#081c24",
                     borderRadius: "0",
                     color: "#fff",
                     zIndex: "299",

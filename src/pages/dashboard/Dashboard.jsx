@@ -16,7 +16,7 @@ const Dashboard = (props) => {
     const [postTradeOpen, setPostTradeOpen] = useState(false);
 
     return (
-        <ContentWrapper contentStyle={{ paddingTop: "30px" }}>
+        <ContentWrapper>
             <Flex sx={{ flexDirection: "column", marginLeft: "50px" }}>
                 <Typography
                     sx={{ fontSize: "3rem", fontWeight: "600", mb: "3rem" }}
@@ -42,7 +42,7 @@ const Dashboard = (props) => {
                         <Paper
                             elevation={4}
                             style={{
-                                height: "200px",
+                                height: "205px",
                                 width: "100%",
                                 borderRadius: "3px",
                             }}
@@ -65,7 +65,8 @@ const Dashboard = (props) => {
                                 </Typography>
                                 <hr
                                     style={{
-                                        borderTop: "2px solid #22222225",
+                                        background: "#ffffff50",
+                                        height: "1px",
                                         width: "100%",
                                     }}
                                 />
@@ -80,16 +81,11 @@ const Dashboard = (props) => {
                                     <Typography
                                         onClick={() => setPostIdeaOpen(true)}
                                         sx={{
-                                            color: "#1985d8",
-                                            cursor: "pointer",
                                             fontSize: "2rem",
                                             textAlign: "center",
                                             padding: ".75rem 0",
-
-                                            "&:hover": {
-                                                backgroundColor: "#eee",
-                                            },
                                         }}
+                                        className="link-text"
                                     >
                                         Post Idea
                                     </Typography>
@@ -97,16 +93,11 @@ const Dashboard = (props) => {
                                     <Typography
                                         onClick={() => setPostTradeOpen(true)}
                                         sx={{
-                                            color: "#1985d8",
-                                            cursor: "pointer",
                                             fontSize: "2rem",
                                             textAlign: "center",
                                             padding: ".75rem 0",
-
-                                            "&:hover": {
-                                                backgroundColor: "#eee",
-                                            },
                                         }}
+                                        className="link-text"
                                     >
                                         Post Trade
                                     </Typography>
@@ -119,15 +110,11 @@ const Dashboard = (props) => {
                                     >
                                         <Typography
                                             sx={{
-                                                color: "#1985d8",
                                                 fontSize: "2rem",
                                                 textAlign: "center",
-                                                padding: ".75rem 0",
-
-                                                "&:hover": {
-                                                    backgroundColor: "#eee",
-                                                },
+                                                padding: ".75rem 0 1.5rem",
                                             }}
+                                            className="link-text"
                                         >
                                             View Stats
                                         </Typography>
@@ -165,7 +152,7 @@ const Dashboard = (props) => {
                                         fontSize: "2.4rem",
                                         fontWeight: "600",
                                         marginTop: "1rem",
-                                        color: "#0DC24A",
+                                        color: "#1abc9c",
                                     }}
                                 >
                                     $1024.41
@@ -179,8 +166,8 @@ const Dashboard = (props) => {
                         elevation={4}
                         style={{
                             width: "50%",
-                            height: "395px",
-                            marginTop: "6rem",
+                            height: "370px",
+                            marginTop: "5rem",
                         }}
                     >
                         <News />

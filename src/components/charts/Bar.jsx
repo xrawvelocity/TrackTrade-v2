@@ -30,9 +30,9 @@ const CustomBar = () => {
         let fill;
 
         if (amount > 0) {
-            fill = "#0DC24A";
+            fill = "#1abc9c";
         } else {
-            fill = "#CD1010";
+            fill = "#e74c3c";
         }
 
         return <Rectangle {...props} fill={fill} />;
@@ -46,7 +46,7 @@ const CustomBar = () => {
                     top: 5,
                     right: 30,
                     left: 20,
-                    bottom: 5,
+                    bottom: 15,
                 }}
             >
                 <CartesianGrid stroke="#00000015" />
@@ -54,7 +54,7 @@ const CustomBar = () => {
                 <YAxis />
                 <Tooltip />
                 <ReferenceLine y={0} stroke="#000" />
-                <Bar dataKey="amount" shape={CustomBarShape} barSize={50} />
+                <Bar dataKey="amount" shape={CustomBarShape} barSize={30} />
             </BarChart>
         </ResponsiveContainer>
     );

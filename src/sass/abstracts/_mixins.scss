@@ -13,6 +13,25 @@
     transform: translate(-50%, -50%);
 }
 
+$scrollbar-width: 10px;
+$scrollbar-bg-color: #ccc;
+$scrollbar-radius: 5px;
+
+@mixin scrollbar {
+  &::-webkit-scrollbar {
+    width: $scrollbar-width;
+    background-color: $scrollbar-bg-color;
+    border-radius: $scrollbar-radius;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: $scrollbar-radius;
+    background-color: darken($scrollbar-bg-color, 10%);
+    &:hover {
+      background-color: darken($scrollbar-bg-color, 20%);
+    }
+  }
+}
+
 
 //MEDIA QUERY MANAGER
 /*

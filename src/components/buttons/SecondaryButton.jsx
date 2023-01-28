@@ -8,11 +8,11 @@ const SecondaryButton = ({ children, onClick, sx, ...props }) => {
             disableElevation
             variant="outlined"
             sx={{
-                borderColor: "#00000070",
+                borderColor: "#ffffff70",
                 width: "fit-content",
                 height: "fit-content",
                 textDecoration: "none",
-                color: "#111",
+                color: "#fff",
                 padding: "0.9rem 1.5rem",
                 lineHeight: "1.5",
                 borderRadius: "3px",

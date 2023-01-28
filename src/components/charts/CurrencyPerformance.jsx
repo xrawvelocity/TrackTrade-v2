@@ -9,10 +9,10 @@ const CurrencyPerformance = ({ paperStyles }) => {
         <Paper
             elevation={4}
             sx={{
-                height: "395px",
+                height: "370px",
                 width: "45%",
                 borderRadius: "3px",
-                marginTop: "6rem",
+                marginTop: "5rem",
                 ...paperStyles,
             }}
         >

@@ -10,7 +10,7 @@
 
 html {
     font-size: 62.5%;
-    background-color: $color-blue-dark-3;
+    background-color: $blue-dark-2;
     overflow-x: hidden;
     // @include respond(big-desktop){ //width > 1800px
     //     font-size: 75%;
@@ -32,6 +32,7 @@ html {
 body {
     font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
         "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    color: $white !important;
 }
 
 a,
@@ -65,7 +66,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 main {
-    background-color: $color-blue-dark-3;
+    background-color: $gray-2;
     min-height: 100vh;
 }
 
@@ -87,29 +88,8 @@ main {
     color: #fff;
 }
 
-.coming-soon-text {
-    width: auto;
-    height: 30vh;
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    font-size: 5rem;
-    font-weight: 700;
-    letter-spacing: 10px;
-
-    background: linear-gradient(
-        to right,
-        rgba(200, 50, 0, 1),
-        rgba(50, 0, 200, 1)
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
 .mainbutton {
-    background-color: $color-blue-bright-1;
+    background-color: $blue-bright-1;
     width: fit-content;
     height: fit-content;
     text-decoration: none;
@@ -121,8 +101,12 @@ main {
 
     &:hover {
         cursor: pointer;
-        background-color: $color-blue-bright-2;
+        background-color: $blue-bright-2;
     }
+}
+
+#fxcalendar {
+    filter: hue-rotate(10deg) contrast(1.09);
 }
 
 #fxcalendar,
@@ -143,7 +127,7 @@ main {
 
 #charts {
     padding: 200px 10%;
-    background-color: $color-blue-dark-3;
+    background-color: $tertiary;
 }
 
 #tradingview-widget-container {
@@ -154,36 +138,15 @@ main {
     display: flex;
     width: 100vw;
     min-height: 100vh;
-    background-color: $color-white;
+    background-color: $gray-2;
 }
 
-.MuiTooltip-tooltip {
-    font-size: 1.2rem !important;
-}
+.link-text {
+    color: $info;
+    cursor: pointer;
+    transition: all .2s ease;
 
-.MuiDataGrid-columnSeparator {
-    display: none !important;
-}
-
-.MuiDataGrid-columnHeaderTitleContainer {
-    padding-left: 0 !important;
-}
-
-.MuiDataGrid-menuList {
-    & > * {
-        font-size: 1.4rem !important;
+    &:hover {
+        filter: brightness(1.5);
     }
-}
-
-.MuiDataGrid-menuIcon {
-    & > * > * {
-        font-size: 2rem !important;
-    }
-}
-
-.MuiDataGrid-sortIcon {
-    font-size: 1.6rem !important;
-}
-
-.MuiDataGrid-filterForm {
 }

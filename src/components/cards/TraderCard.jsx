@@ -64,6 +64,7 @@ const TraderCard = ({ trader }) => {
                                     fontSize: "2rem",
                                     fontWeight: "500",
                                     ml: "2rem",
+                                    color: "#f3f3f3",
                                 }}
                             >
                                 {username}
