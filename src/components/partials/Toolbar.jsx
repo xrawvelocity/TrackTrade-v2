@@ -15,7 +15,7 @@ const Toolbar = ({
 }) => {
     const useStyles = makeStyles(() => ({
         container: {
-            backgroundColor: "#131722",
+            backgroundColor: "#111c44",
             padding: "1rem 3rem",
             margin: "0 0 3rem -3rem",
             width: "103%",
@@ -29,7 +29,7 @@ const Toolbar = ({
             <Flex>
                 <Search
                     style={{ marginRight: "3rem" }}
-                    onChange={onSearch}
+                    handleSearch={onSearch}
                     placeholder={searchPlaceholder}
                 />
                 <SelectInput

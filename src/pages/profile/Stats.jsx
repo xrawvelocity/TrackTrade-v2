@@ -4,7 +4,7 @@ import TradesEquity from "components/charts/TradesEquity";
 import WinLossRatio from "components/charts/WinLossRatio";
 import Flex from "components/partials/Flex";
 import HeaderText from "components/partials/HeaderText";
-import { getUserTrades } from "firebase/methods";
+import { getUserTrades } from "../../firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
 import { useParams } from "react-router";
@@ -70,7 +70,7 @@ const Stats = ({ RightComponent, isProfile, otherUser }) => {
                                     sx={{
                                         fontSize: "2.4rem",
                                         fontWeight: "600",
-                                        color: "#1abc9c",
+                                        color: "#01b574",
                                     }}
                                 >
                                     $1272.43

@@ -8,7 +8,7 @@ import {
     addConnection,
     getUserTrades,
     removeConnection,
-} from "firebase/methods";
+} from "../../firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import moment from "moment";
 import React, { useState } from "react";

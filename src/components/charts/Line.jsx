@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 import {
     Area,
@@ -8,6 +9,18 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
+
+function CustomTooltip({ payload, label, active }) {
+    const value = payload?.[0]?.value || 0;
+    const formattedValue = value < 0 ? `-$${Math.abs(value)}` : `$${value}`;
+
+    return active ? (
+        <Box sx={{ bgcolor: "#0b1437", p: "1rem", maxWidth: "200px" }}>
+            <p>{label}</p>
+            <p>{formattedValue}</p>
+        </Box>
+    ) : null;
+}
 
 const CustomLine = () => {
     const data = [
@@ -51,14 +64,14 @@ const CustomLine = () => {
                 }}
             >
                 <CartesianGrid stroke="#00000015" />
-                <XAxis dataKey="x" />
-                <YAxis />
-                <Tooltip />
+                <XAxis dataKey="x" stroke="#dddddd" />
+                <YAxis stroke="#dddddd" />
+                <Tooltip content={<CustomTooltip />} />
                 <defs>
                     <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
                         <stop
                             offset={off}
-                            stopColor="#1abc9c"
+                            stopColor="#01b574"
                             stopOpacity={5}
                         />
                         <stop

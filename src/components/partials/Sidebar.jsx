@@ -80,9 +80,9 @@ const Sidebar = (props) => {
                                     lineHeight: "1.2",
                                 }}
                             >
-                                Track
+                                <span style={{ color: "#01b574" }}>T</span>rack
                                 <br />
-                                Trade
+                                <span style={{ color: "#e74c3c" }}>T</span>rade
                             </div>
                         </Flex>
                     ) : (

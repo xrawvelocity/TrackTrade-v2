@@ -2,7 +2,7 @@ import { Divider, Paper, Typography } from "@mui/material";
 import UserAvatar from "components/partials/UserAvatar";
 import { useAuth } from "context/authCtx";
 import { COLORS } from "enums/colors";
-import { getTraderById } from "firebase/methods";
+import { getTraderById } from "../../firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import moment from "moment";
 import React, { useState } from "react";
@@ -65,7 +65,7 @@ const TradeCard = ({ trade, ...props }) => {
                                         color:
                                             type === "sell"
                                                 ? "#e74c3c"
-                                                : "#1abc9c",
+                                                : "#01b574",
                                     }}
                                 >
                                     {type.toUpperCase()}

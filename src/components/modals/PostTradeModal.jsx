@@ -14,7 +14,7 @@ import FormInput from "components/inputs/FormInput";
 import SelectInput from "components/inputs/SelectInput";
 import MainButton from "components/buttons/MainButton";
 import { SYMBOLS } from "enums/symbols";
-import { postTrade, uploadImage } from "firebase/methods";
+import { postTrade, uploadImage } from "../../firebase/methods";
 import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
 import { calculateForex, calculateForexTrade } from "utils/calculateForex";

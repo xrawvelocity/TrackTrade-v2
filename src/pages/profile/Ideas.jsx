@@ -5,17 +5,39 @@ import HeaderText from "components/partials/HeaderText";
 import Loading from "components/partials/Loading";
 import PostIdeaModal from "components/modals/PostIdeaModal";
 import Toolbar from "components/partials/Toolbar";
-import { useAuth } from "context/authCtx";
-import { getUserIdeas } from "firebase/methods";
+import { getUserIdeas } from "../../firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useParams } from "react-router";
+
+const filterAndSortIdeas = (tradeIdeas, searchTerm, sortOption) => {
+    let filteredIdeas = tradeIdeas.slice();
+
+    if (searchTerm) {
+        filteredIdeas = filteredIdeas.filter((idea) =>
+            idea.currency.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+
+    if (sortOption === "newest") {
+        filteredIdeas.sort((a, b) => b.createdAt - a.createdAt);
+    } else if (sortOption === "oldest") {
+        filteredIdeas.sort((a, b) => a.createdAt - b.createdAt);
+    } else if (sortOption === "sell") {
+        filteredIdeas = filteredIdeas.filter((idea) => idea.type === "sell");
+    } else if (sortOption === "buy") {
+        filteredIdeas = filteredIdeas.filter((idea) => idea.type === "buy");
+    }
+
+    return filteredIdeas;
+};
 
 const Ideas = ({ RightComponent, isProfile, otherUser }) => {
     const [postIdeaOpen, setPostIdeaOpen] = useState(false);
     const [tradeIdeas, setTradeIdeas] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { currentUser } = useAuth();
+    const [searchTerm, setSearchTerm] = useState("");
+    const [sortOption, setSortOption] = useState("");
 
     const params = useParams();
 
@@ -25,17 +47,19 @@ const Ideas = ({ RightComponent, isProfile, otherUser }) => {
         setLoading(false);
     }, [postIdeaOpen]);
 
+    const filteredAndSortedIdeas = useMemo(() => {
+        return filterAndSortIdeas(tradeIdeas, searchTerm, sortOption);
+    }, [tradeIdeas, searchTerm, sortOption]);
+
     const loadContent = () => {
-        if (tradeIdeas.length) {
+        if (filteredAndSortedIdeas.length) {
             return (
                 <Grid container spacing={3}>
-                    {tradeIdeas.map((each) => {
-                        return (
-                            <Grid item xs={4}>
-                                <TradeIdeaCard tradeIdea={each} />
-                            </Grid>
-                        );
-                    })}
+                    {filteredAndSortedIdeas.map((each) => (
+                        <Grid item xs={4} key={each.ideaId}>
+                            <TradeIdeaCard tradeIdea={each} />
+                        </Grid>
+                    ))}
                 </Grid>
             );
         } else {
@@ -64,9 +88,9 @@ const Ideas = ({ RightComponent, isProfile, otherUser }) => {
                 RightComponent={RightComponent}
             />
             <Toolbar
-                // onSearch={this.searchTradeIdeas}
+                onSearch={(value) => setSearchTerm(value)}
+                onSort={(value) => setSortOption(value)}
                 searchPlaceholder={"Search for trade ideas by their symbol..."}
-                // onSort={this.sortTradeIdeas}
                 sortOptions={[
                     { text: "Newest", value: "newest" },
                     { text: "Oldest", value: "oldest" },

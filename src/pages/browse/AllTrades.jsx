@@ -4,7 +4,7 @@ import HeaderText from "components/partials/HeaderText";
 import Loading from "components/partials/Loading";
 import PostTradeModal from "components/modals/PostTradeModal";
 import Toolbar from "components/partials/Toolbar";
-import { getAllTrades } from "firebase/methods";
+import { getAllTrades } from "../../firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
 import Flex from "components/partials/Flex";

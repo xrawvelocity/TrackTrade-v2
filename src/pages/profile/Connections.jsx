@@ -5,7 +5,7 @@ import HeaderText from "components/partials/HeaderText";
 import Loading from "components/partials/Loading";
 import Toolbar from "components/partials/Toolbar";
 import { useAuth } from "context/authCtx";
-import { getAllConnections } from "firebase/methods";
+import { getAllConnections } from "../../firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
@@ -15,25 +15,48 @@ const Connections = ({ RightComponent }) => {
     const { getUserData, userData } = useAuth();
     const [connections, setConnections] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [filteredConnections, setFilteredConnections] = useState([]);
+    const [sortOrder, setSortOrder] = useState("asc"); // Initial sort order
 
     useAsyncEffect(async () => {
         await getUserData();
         const res = await getAllConnections(userData.connections);
         setConnections(res);
+        setFilteredConnections(res);
         setLoading(false);
     }, []);
 
+    const searchConnections = (searchTerm) => {
+        console.log("searchTerm: ", searchTerm);
+        const filtered = connections.filter((connection) =>
+            connection.username.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredConnections(filtered);
+    };
+
+    const sortConnections = () => {
+        const sorted = [...filteredConnections];
+        sorted.sort((a, b) => {
+            const nameA = a.username.toLowerCase();
+            const nameB = b.username.toLowerCase();
+            return sortOrder === "asc"
+                ? nameA.localeCompare(nameB)
+                : nameB.localeCompare(nameA);
+        });
+
+        setFilteredConnections(sorted);
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc"); // Toggle sort order
+    };
+
     const loadContent = () => {
-        if (connections.length) {
+        if (filteredConnections.length) {
             return (
                 <Grid container spacing={3}>
-                    {connections.map((each) => {
-                        return (
-                            <Grid item xs={2.5}>
-                                <TraderCard trader={each} />
-                            </Grid>
-                        );
-                    })}
+                    {filteredConnections.map((each) => (
+                        <Grid item xs={2.5} key={each.id}>
+                            <TraderCard trader={each} />
+                        </Grid>
+                    ))}
                 </Grid>
             );
         } else {
@@ -60,10 +83,13 @@ const Connections = ({ RightComponent }) => {
                 RightComponent={RightComponent}
             />
             <Toolbar
-                // onSearch={this.searchTradeTrades}
+                onSearch={searchConnections}
                 searchPlaceholder={"Search for traders by their username..."}
-                // onSort={this.sortTradeTrades}
-                sortOptions={[]}
+                onSort={sortConnections}
+                sortOptions={[
+                    { label: "A-Z", value: "asc" },
+                    { label: "Z-A", value: "desc" },
+                ]}
                 onButton={() => history.push("/browse/all-traders")}
                 buttonText="View All Traders"
             />

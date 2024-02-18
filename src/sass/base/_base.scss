@@ -30,9 +30,10 @@ html {
 }
 
 body {
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana,
+        sans-serif;
     color: $white !important;
+    background-color: #0b1437;
 }
 
 a,
@@ -113,6 +114,8 @@ main {
 #tvchart {
     width: 100%;
     height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
 
     & > div {
         width: 100% !important;
@@ -138,13 +141,13 @@ main {
     display: flex;
     width: 100vw;
     min-height: 100vh;
-    background-color: $gray-2;
+    background-color: #0b1437;
 }
 
 .link-text {
     color: $info;
     cursor: pointer;
-    transition: all .2s ease;
+    transition: all 0.2s ease;
 
     &:hover {
         filter: brightness(1.5);

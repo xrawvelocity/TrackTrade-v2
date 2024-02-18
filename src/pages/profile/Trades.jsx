@@ -5,15 +5,43 @@ import Flex from "components/partials/Flex";
 import HeaderText from "components/partials/HeaderText";
 import Loading from "components/partials/Loading";
 import Toolbar from "components/partials/Toolbar";
-import { getUserTrades } from "firebase/methods";
+import { getUserTrades } from "../../firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useParams } from "react-router";
+
+const filterAndSortTrades = (trades, searchTerm, sortOption) => {
+    let filteredTrades = trades;
+
+    // Filter by search term
+    if (searchTerm) {
+        filteredTrades = filteredTrades.filter((trade) =>
+            trade.currency.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+
+    // Sort
+    if (sortOption === "newest") {
+        filteredTrades.sort((a, b) => b.createdAt - a.createdAt);
+    } else if (sortOption === "oldest") {
+        filteredTrades.sort((a, b) => a.createdAt - b.createdAt);
+    } else if (sortOption === "sell") {
+        filteredTrades = filteredTrades.filter(
+            (trade) => trade.type === "sell"
+        );
+    } else if (sortOption === "buy") {
+        filteredTrades = filteredTrades.filter((trade) => trade.type === "buy");
+    }
+
+    return filteredTrades;
+};
 
 const Trades = ({ RightComponent, isProfile, otherUser }) => {
     const [postTradeOpen, setPostTradeOpen] = useState(false);
     const [trades, setTrades] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [sortOption, setSortOption] = useState("");
 
     const params = useParams();
 
@@ -23,11 +51,15 @@ const Trades = ({ RightComponent, isProfile, otherUser }) => {
         setLoading(false);
     }, [postTradeOpen]);
 
+    const filteredAndSortedTrades = useMemo(() => {
+        return filterAndSortTrades(trades, searchTerm, sortOption);
+    }, [trades, searchTerm, sortOption]);
+
     const loadContent = () => {
-        if (trades.length) {
+        if (filteredAndSortedTrades.length) {
             return (
                 <Grid container spacing={3}>
-                    {trades.map((each) => {
+                    {filteredAndSortedTrades.map((each) => {
                         return (
                             <Grid item xs={4}>
                                 <TradeCard trade={each} />
@@ -62,9 +94,9 @@ const Trades = ({ RightComponent, isProfile, otherUser }) => {
                 RightComponent={RightComponent}
             />
             <Toolbar
-                // onSearch={this.searchTradeTrades}
+                onSearch={setSearchTerm}
+                onSort={setSortOption}
                 searchPlaceholder={"Search for trades by their symbol..."}
-                // onSort={this.sortTradeTrades}
                 sortOptions={[
                     { text: "Newest", value: "newest" },
                     { text: "Oldest", value: "oldest" },

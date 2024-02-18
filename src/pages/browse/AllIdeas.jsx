@@ -4,7 +4,7 @@ import HeaderText from "components/partials/HeaderText";
 import Loading from "components/partials/Loading";
 import PostIdeaModal from "components/modals/PostIdeaModal";
 import Toolbar from "components/partials/Toolbar";
-import { getAllIdeas } from "firebase/methods";
+import { getAllIdeas } from "../../firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useState } from "react";
 import Flex from "components/partials/Flex";

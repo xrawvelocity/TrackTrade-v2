@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import getRandomColor from "utils/randomColor";
 import { isAccessible } from "get-contrast";
 import ContentWrapper from "components/partials/ContentWrapper";
-import { db } from "firebase/firebase";
+import { db } from "../../firebase/firebase";
 
 const Message = (props) => {
     return (

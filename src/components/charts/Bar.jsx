@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 import {
     BarChart,
@@ -12,6 +13,18 @@ import {
     ResponsiveContainer,
     Rectangle,
 } from "recharts";
+
+function CustomTooltip({ payload, label, active }) {
+    const value = payload?.[0]?.value || 0;
+    const formattedValue = value < 0 ? `-$${Math.abs(value)}` : `$${value}`;
+
+    return active ? (
+        <Box sx={{ bgcolor: "#0b1437", p: "1rem", maxWidth: "200px" }}>
+            <p>{label}</p>
+            <p>{formattedValue}</p>
+        </Box>
+    ) : null;
+}
 
 const CustomBar = () => {
     const data = [
@@ -30,7 +43,7 @@ const CustomBar = () => {
         let fill;
 
         if (amount > 0) {
-            fill = "#1abc9c";
+            fill = "#01b574";
         } else {
             fill = "#e74c3c";
         }
@@ -50,9 +63,12 @@ const CustomBar = () => {
                 }}
             >
                 <CartesianGrid stroke="#00000015" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
+                <XAxis dataKey="name" stroke="#dddddd" />
+                <YAxis stroke="#dddddd" />
+                <Tooltip
+                    content={<CustomTooltip />}
+                    cursor={{ fill: "#0e1735" }}
+                />
                 <ReferenceLine y={0} stroke="#000" />
                 <Bar dataKey="amount" shape={CustomBarShape} barSize={30} />
             </BarChart>

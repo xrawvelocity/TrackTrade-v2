@@ -10,14 +10,14 @@ const News = () => {
             "https://s3.tradingview.com/external-embedding/embed-widget-events.js";
         script.innerHTML = JSON.stringify({
             colorTheme: darkMode ? "dark" : "light",
-            isTransparent: false,
+            isTransparent: true,
             width: "510",
             height: "600",
             locale: "en",
             importanceFilter: "-1,0,1",
         });
         document.getElementById("fxcalendar").appendChild(script);
-    }, []);
+    }, [darkMode]);
 
     return <div id="fxcalendar"></div>;
 };

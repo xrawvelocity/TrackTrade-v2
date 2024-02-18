@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import firebase from "firebase";
 import Header from "components/partials/Header";
 import { useAuth } from "context/authCtx";
 import { parseFirebaseError } from "utils/misc";

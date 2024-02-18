@@ -14,7 +14,7 @@ import {
     removeConnection,
     updateAvatar,
     uploadImage,
-} from "firebase/methods";
+} from "../../firebase/methods";
 import { useAsyncEffect } from "hooks/use-async-effect";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";

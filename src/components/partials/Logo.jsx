@@ -9,7 +9,7 @@ const Logo = () => {
                 backgroundColor: "#fff",
                 borderRadius: "50%",
                 padding: "1rem",
-                fontSize: "1.7rem",
+                fontSize: "2rem",
                 fontWeight: "900",
                 display: "flex",
                 justifyContent: "center",
@@ -19,7 +19,8 @@ const Logo = () => {
                 cursor: "default",
             }}
         >
-            TT
+            <span style={{ color: "#01b574" }}>T</span>
+            <span style={{ color: "#e74c3c" }}>T</span>
         </div>
     );
 };

@@ -43,7 +43,7 @@ const Search = ({ placeholder, handleSearch, width, style }) => {
             <TextField
                 className={classes.field}
                 placeholder={placeholder}
-                onChange={(e) => handleSearch(e)}
+                onChange={(e) => handleSearch(e.target.value)}
                 size="small"
                 variant="outlined"
                 InputProps={{

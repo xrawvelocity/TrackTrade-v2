@@ -70,7 +70,7 @@
         }
 
         &--image {
-            background-image: url("./images/laptop-bg-landing.png");
+            background-image: url("../images/laptop-bg-landing.png");
             background-size: cover;
             background-position: center;
 
@@ -78,8 +78,7 @@
             width: 612px;
             margin: 10rem 3rem 0 0;
 
-            animation: float 3s cubic-bezier(0.645, 0.045, 0.355, 1) 0.1s
-                infinite;
+            animation: float 3s cubic-bezier(0.645, 0.045, 0.355, 1) 0.1s infinite;
 
             @include respond(smallphone) {
                 display: none;
@@ -88,11 +87,8 @@
     }
 
     &-section-1 {
-        background-image: linear-gradient(
-                rgba($blue-dark-2, 0.8),
-                rgba($blue-dark-2, 0.8)
-            ),
-            url("./images/chartbglanding.png");
+        background-image: linear-gradient(rgba($blue-dark-2, 0.8), rgba($blue-dark-2, 0.8)),
+            url("../images/chartbglanding.png");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -118,7 +114,7 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
 
             &__1--image {
-                background-image: url("./images/column-chart-icon.png");
+                background-image: url("../images/column-chart-icon.png");
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -132,7 +128,7 @@
             }
 
             &__2--image {
-                background-image: url("./images/competition-icon.png");
+                background-image: url("../images/competition-icon.png");
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -146,7 +142,7 @@
             }
 
             &__3--image {
-                background-image: url("./images/message-icon.png");
+                background-image: url("../images/message-icon.png");
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -159,7 +155,7 @@
                 }
             }
             &__4--image {
-                background-image: url("./images/share-icon.png");
+                background-image: url("../images/share-icon.png");
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -172,7 +168,7 @@
                 }
             }
             &__5--image {
-                background-image: url("./images/tools-icon.png");
+                background-image: url("../images/tools-icon.png");
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -185,7 +181,7 @@
                 }
             }
             &__6--image {
-                background-image: url("./images/notification-icon.png");
+                background-image: url("../images/notification-icon.png");
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
